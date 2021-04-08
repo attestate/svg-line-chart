@@ -7,7 +7,6 @@ import {
   sortRangeAsc,
   countUnique,
   pointWidth,
-  getRank,
   rangeToPoints
 } from "../src/index.mjs";
 
@@ -105,37 +104,6 @@ test("if point width is calculated correctly", t => {
   t.is(width, 1);
 });
 
-test("if getting the first rank is possible", t => {
-  const range = [
-    new Date("2021-01-01T00:00:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z")
-  ];
-
-  const rank = getRank(new Date("2021-01-01T00:00:00.000Z"), range);
-  t.is(rank, 0);
-});
-
-test("if getting the second rank is possible", t => {
-  const range = [
-    new Date("2021-01-01T00:00:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z"),
-    new Date("2021-01-03T00:00:00.000Z")
-  ];
-
-  const rank = getRank(new Date("2021-01-02T00:00:00.000Z"), range);
-  t.is(rank, 1);
-});
-
-test("if getting the last rank is possible", t => {
-  const range = [
-    new Date("2021-01-01T00:00:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z"),
-    new Date("2021-01-03T00:00:00.000Z")
-  ];
-
-  const rank = getRank(new Date("2021-01-04T00:00:00.000Z"), range);
-  t.is(rank, range.length);
-});
 
 test("if range to points works", t => {
   const range = [

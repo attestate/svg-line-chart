@@ -77,23 +77,6 @@ export function pointWidth(total, range, equalityOp) {
   return total / count;
 }
 
-// NOTE: This implementation is O(n). Since range is supposed to be sorted
-// ascendingly, a binary search could be performed on `range` to make this
-// function faster.
-export function getRank(elem, range) {
-  let rank = 0;
-  while (isBefore(range[rank], elem)) {
-    if (range.length > rank) {
-      rank++;
-    } else {
-      rank = range.length;
-      break;
-    }
-  }
-
-  return rank;
-}
-
 export function rangeToPoints(total, range, equalityOp = isSameDay) {
   range = sortRangeAsc(range);
   const pWidth = pointWidth(total, range, equalityOp);
