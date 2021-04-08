@@ -1,7 +1,7 @@
 {
   "name": "svg-line-chart",
   "version": "0.0.1",
-  "description": "A simple way to generate svg line charts in nodejs",
+  "description": "A simple way to generate svg line charts in JS",
   "main": "src/index.mjs",
   "scripts": {
     "test": "ava --verbose",

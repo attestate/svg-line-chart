@@ -21,14 +21,24 @@ http
   .createServer((req, res) => {
     const width = 70;
     const height = 35;
+    const strokeWidth = 0.2;
     const x = scaleDates(width, range);
     const y = scalePoints(height, data);
-    const l = polyline(x, y, { strokeWidth: 0.1 });
+    const l = polyline(x, y, { strokeWidth });
     res.writeHead(200, { "Content-Type": "text/html" });
 
     res.end(html`
       <svg viewBox="0 0 ${width} ${height}">
         ${l}
+        <g class="grid x-grid" stroke="black" stroke-width=${strokeWidth}>
+          <line x1="0" x2="0" y1="0" y2=${height}></line>
+        </g>
+        <g class="grid x-grid" stroke="black" stroke-width=${strokeWidth}>
+          <line x1="0" x2=${width} y1=${height} y2=${height}></line>
+        </g>
+        <g>
+          <text font-size="2" x="10" y=${height}>2008</text>
+        </g>
       </svg>
     `);
   })
