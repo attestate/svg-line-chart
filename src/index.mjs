@@ -83,9 +83,9 @@ export function scaleDates(total, range, equalityOp = isSameDay) {
   return range.map((d, i) => i * pWidth);
 }
 
-export function scalePoints(total, range) {
-  var max = Math.max.apply(Math, range);
-  var min = Math.min.apply(Math, range);
+export function scalePoints(total, range, margin = 0) {
+  var max = Math.max.apply(Math, range) + margin;
+  var min = Math.min.apply(Math, range) - margin;
   const maxAllowed = total;
   const minAllowed = 0;
 

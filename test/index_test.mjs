@@ -138,6 +138,14 @@ test("if scaling a complex set of points works", t => {
   t.is(p2, 0);
 });
 
+test("if scaling points and adding a margin works", t => {
+  const points = [1, 2];
+  const margin = 1;
+  const [p1, p2] = scalePoints(3, points, margin);
+  t.is(p1, 2);
+  t.is(p2, 1);
+});
+
 test("if param-case for object is applied", t => {
   const actual = toParamCase({ hello: "world", helloWorld: "helloWorld" });
   t.deepEqual(actual, {
