@@ -106,3 +106,13 @@ export function toParamCase(obj) {
 
   return pcObj;
 }
+
+export function renderAxis(x1, x2, y1, y2, options) {
+  options = { ...defaultOptions, ...options };
+  options = toParamCase(options);
+  return html`
+    <g ...${options}>
+      <line x1=${x1} x2=${x2} y1=${y1} y2=${y2}></line>
+    </g>
+  `;
+}

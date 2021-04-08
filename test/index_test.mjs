@@ -10,6 +10,7 @@ import {
   scaleDates,
   scalePoints,
   toParamCase,
+  renderAxis
 } from "../src/index.mjs";
 
 test("if polyline includes all data points", t => {
@@ -143,4 +144,16 @@ test("if param-case for object is applied", t => {
     hello: "world",
     "hello-world": "helloWorld"
   });
+});
+
+test("if rendering an axis is possible", t => {
+  const x1 = 1;
+  const x2 = 2;
+  const y1 = 3;
+  const y2 = 4;
+
+  const actual = renderAxis(x1, x2, y1, y2);
+  t.true(
+    actual.includes(`<line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>`)
+  );
 });
