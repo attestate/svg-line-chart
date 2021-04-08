@@ -117,7 +117,7 @@ test("if range to points works", t => {
 
   const total = 3;
 
-  const [p1, p2, p3] = scaleDates(total, range, isSameDay);
+  const [p1, p2, p3] = scaleDates(0, total, range, isSameDay);
   t.is(p1, 0);
   t.is(p2, 1);
   t.is(p3, 2);
@@ -125,7 +125,7 @@ test("if range to points works", t => {
 
 test("if scaling a simple set of points works", t => {
   const points = [0, 1, 1];
-  const [p1, p2, p3] = scalePoints(1, points);
+  const [p1, p2, p3] = scalePoints(0, 1, points);
   t.is(p1, 1);
   t.is(p2, 0);
   t.is(p3, 0);
@@ -133,7 +133,7 @@ test("if scaling a simple set of points works", t => {
 
 test("if scaling a complex set of points works", t => {
   const points = [0, 5];
-  const [p1, p2, p3] = scalePoints(10, points);
+  const [p1, p2, p3] = scalePoints(0, 10, points);
   t.is(p1, 10);
   t.is(p2, 0);
 });
@@ -141,7 +141,17 @@ test("if scaling a complex set of points works", t => {
 test("if scaling points and adding a margin works", t => {
   const points = [1, 2];
   const margin = 1;
-  const [p1, p2] = scalePoints(3, points, margin);
+  const [p1, p2] = scalePoints(0, 3, points, margin);
+  t.is(p1, 2);
+  t.is(p2, 1);
+});
+
+test("if scaling points, adding a margin and an offset works", t => {
+  const points = [1, 2];
+  const margin = 1;
+  const from = 1;
+  const to = 4;
+  const [p1, p2] = scalePoints(from, to, points, margin);
   t.is(p1, 2);
   t.is(p2, 1);
 });

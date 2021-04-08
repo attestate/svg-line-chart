@@ -77,21 +77,23 @@ export function pointWidth(total, range, equalityOp) {
   return total / count;
 }
 
-export function scaleDates(total, range, equalityOp = isSameDay) {
+export function scaleDates(from, to, range, equalityOp = isSameDay) {
   range = sortRangeAsc(range);
-  const pWidth = pointWidth(total, range, equalityOp);
-  return range.map((d, i) => i * pWidth);
+  const pWidth = pointWidth(to - from, range, equalityOp);
+  return range.map((d, i) => from + i * pWidth);
 }
 
-export function scalePoints(total, range, margin = 0) {
-  var max = Math.max.apply(Math, range) + margin;
-  var min = Math.min.apply(Math, range) - margin;
-  const maxAllowed = total;
-  const minAllowed = 0;
+export function scalePoints(from, to, range, margin = 0) {
+  const max = Math.max.apply(Math, range) + margin;
+  const min = Math.min.apply(Math, range) - margin;
+
+  const minAllowed = from;
+  const maxAllowed = to;
 
   // NOTE: For explaination see: https://stackoverflow.com/a/31687097/1263876
   const scale = val =>
-    total -
+    to -
+    from * 2 -
     ((maxAllowed - minAllowed) * (val - min)) / (max - min) +
     minAllowed;
   return range.map(scale);

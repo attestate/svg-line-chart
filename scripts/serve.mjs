@@ -26,22 +26,30 @@ http
   .createServer((req, res) => {
     const margin = 10;
     const width = 70;
+    const offsetX = 5;
+    const offsetY = 5;
     const height = 35;
-    const strokeWidth = 0.2;
+    const strokeWidth = 0.1;
     const stroke = "black";
-    const x = scaleDates(width, range);
-    const y = scalePoints(height, data, margin);
-    const l = polyline(x, y, { strokeWidth });
-    res.writeHead(200, { "Content-Type": "text/html" });
+    const title = "A line chart";
 
+    const x = scaleDates(offsetX, width, range);
+    const y = scalePoints(offsetY, height, data, margin);
+    const l = polyline(x, y, { strokeWidth });
+
+    res.writeHead(200, { "Content-Type": "text/html" });
     res.end(html`
       <svg viewBox="0 0 ${width} ${height}">
+        <title>${title}</title>
         ${l}
-        ${renderAxis(0, 0, 0, height, { stroke, strokeWidth })}
-        ${renderAxis(0, width, height, height, { stroke, strokeWidth })}
-        <g>
-          <text font-size="2" x="10" y=${height}>2008</text>
-        </g>
+        ${renderAxis(offsetX, offsetX, 0, height - offsetY, {
+          stroke,
+          strokeWidth
+        })}
+        ${renderAxis(offsetX, width, height - offsetY, height - offsetY, {
+          stroke,
+          strokeWidth
+        })}
       </svg>
     `);
   })
