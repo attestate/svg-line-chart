@@ -1,9 +1,9 @@
-# node-svg-line-chart
+# svg-line-chart
 
 [![Node.js CI](https://github.com/TimDaub/svg-line-chart/actions/workflows/node.js.yml/badge.svg)](https://github.com/TimDaub/svg-line-chart/actions/workflows/node.js.yml)
 
-It's complicated to draw an svg `<polyline>` in node. So I tried making it
-easier. `node-svg-line-chart` is an attempt at making it easier.
+Drawing a simple `<polylin>` should require 50 KBs of `.js` and `.css` extensions.
+I made `svg-line-chart` to generate SVGs fast and without added bloat, in the browser or on the server.
 
 ## Installation
 
