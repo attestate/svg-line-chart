@@ -83,10 +83,17 @@ export function scaleDates(from, to, range, equalityOp = isSameDay) {
   return range.map((d, i) => from + i * pWidth);
 }
 
-export function scalePoints(from, to, range, margin = 0) {
+export function getMinMax(range, margin = 0) {
   const max = Math.max.apply(Math, range) + margin;
   const min = Math.min.apply(Math, range) - margin;
 
+  return {
+    min,
+    max
+  };
+}
+
+export function scalePoints(from, to, min, max, range) {
   const minAllowed = from;
   const maxAllowed = to;
 

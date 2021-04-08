@@ -10,7 +10,8 @@ import {
   polyline,
   scaleDates,
   scalePoints,
-  renderAxis
+  renderAxis,
+  getMinMax
 } from "../src/index.mjs";
 
 let range =
@@ -34,7 +35,8 @@ http
     const title = "A line chart";
 
     const x = scaleDates(offsetX, width, range);
-    const y = scalePoints(offsetY, height, data, margin);
+    const { min, max } = getMinMax(data, margin);
+    const y = scalePoints(offsetY, height, min, max, data);
     const l = polyline(x, y, { strokeWidth });
 
     res.writeHead(200, { "Content-Type": "text/html" });

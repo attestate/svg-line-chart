@@ -10,9 +10,15 @@ import {
   scaleDates,
   scalePoints,
   toParamCase,
-  renderAxis
+  renderAxis,
+  getMinMax
 } from "../src/index.mjs";
 
+test("if getting minimum and maximum from a range works", t => {
+  const { min, max } = getMinMax([-1, 0, -2, 5, 6, 10000, 2, -1100]);
+  t.is(min, -1100);
+  t.is(max, 10000);
+});
 test("if polyline includes all data points", t => {
   const l = polyline([0, 1], [2, 3]);
 
@@ -125,7 +131,8 @@ test("if range to points works", t => {
 
 test("if scaling a simple set of points works", t => {
   const points = [0, 1, 1];
-  const [p1, p2, p3] = scalePoints(0, 1, points);
+  const { min, max } = getMinMax(points);
+  const [p1, p2, p3] = scalePoints(0, 1, min, max, points);
   t.is(p1, 1);
   t.is(p2, 0);
   t.is(p3, 0);
@@ -133,7 +140,8 @@ test("if scaling a simple set of points works", t => {
 
 test("if scaling a complex set of points works", t => {
   const points = [0, 5];
-  const [p1, p2, p3] = scalePoints(0, 10, points);
+  const { min, max } = getMinMax(points);
+  const [p1, p2, p3] = scalePoints(0, 10, min, max, points);
   t.is(p1, 10);
   t.is(p2, 0);
 });
@@ -141,7 +149,8 @@ test("if scaling a complex set of points works", t => {
 test("if scaling points and adding a margin works", t => {
   const points = [1, 2];
   const margin = 1;
-  const [p1, p2] = scalePoints(0, 3, points, margin);
+  const { min, max } = getMinMax(points, margin);
+  const [p1, p2] = scalePoints(0, 3, min, max, points);
   t.is(p1, 2);
   t.is(p2, 1);
 });
@@ -151,7 +160,8 @@ test("if scaling points, adding a margin and an offset works", t => {
   const margin = 1;
   const from = 1;
   const to = 4;
-  const [p1, p2] = scalePoints(from, to, points, margin);
+  const { min, max } = getMinMax(points, margin);
+  const [p1, p2] = scalePoints(from, to, min, max, points);
   t.is(p1, 2);
   t.is(p2, 1);
 });
