@@ -2,6 +2,7 @@
 import htm from "htm";
 import vhtml from "vhtml";
 import { isBefore, isSameDay, format } from "date-fns";
+import { paramCase } from "param-case";
 
 const html = htm.bind(vhtml);
 
@@ -13,6 +14,7 @@ const defaultOptions = {
 
 export function polyline(x, y, options = defaultOptions) {
   options = { ...defaultOptions, ...options };
+  options = toParamCase(options);
 
   if (x.length !== y.length) {
     throw new Error(
@@ -35,11 +37,7 @@ export function polyline(x, y, options = defaultOptions) {
   points = points.slice(0, -1);
 
   return html`
-    <polyline
-      fill=${options.fill}
-      stroke=${options.stroke}
-      stroke-width=${options.strokeWidth}
-      points=${points}/>
+    <polyline ...${options} points=${points}/>
   `;
 }
 
@@ -97,4 +95,14 @@ export function scalePoints(total, range) {
     ((maxAllowed - minAllowed) * (val - min)) / (max - min) +
     minAllowed;
   return range.map(scale);
+}
+
+export function toParamCase(obj) {
+  let pcObj = {};
+
+  Object.keys(obj).forEach(key => {
+    pcObj[paramCase(key)] = obj[key];
+  });
+
+  return pcObj;
 }

@@ -8,7 +8,8 @@ import {
   countUnique,
   pointWidth,
   scaleDates,
-  scalePoints
+  scalePoints,
+  toParamCase,
 } from "../src/index.mjs";
 
 test("if polyline includes all data points", t => {
@@ -134,4 +135,12 @@ test("if scaling a complex set of points works", t => {
   const [p1, p2, p3] = scalePoints(10, points);
   t.is(p1, 10);
   t.is(p2, 0);
+});
+
+test("if param-case for object is applied", t => {
+  const actual = toParamCase({ hello: "world", helloWorld: "helloWorld" });
+  t.deepEqual(actual, {
+    hello: "world",
+    "hello-world": "helloWorld"
+  });
 });
