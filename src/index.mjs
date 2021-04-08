@@ -125,3 +125,24 @@ export function renderAxis(x1, x2, y1, y2, options) {
     </g>
   `;
 }
+
+export function axisLabel(x, y, text, options) {
+  options = toParamCase(options);
+  return html`
+    <g>
+      <text ...${options} x=${x} y=${y}>${text}</text>
+    </g>
+  `;
+}
+
+export function generateLabelRange(min, max, distance) {
+  const labels = [];
+  const start = Math.floor(min);
+  for (let i = start; i <= max; i++) {
+    if (i % distance === 0) {
+      labels.push(i);
+    }
+  }
+
+  return labels;
+}

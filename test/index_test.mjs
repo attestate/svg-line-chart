@@ -11,14 +11,39 @@ import {
   scalePoints,
   toParamCase,
   renderAxis,
-  getMinMax
+  axisLabel,
+  getMinMax,
+  generateLabelRange
 } from "../src/index.mjs";
+
+test("if generating a label range works", t => {
+  const min = 75.1;
+  const max = 184.4;
+  const distance = 50;
+  const range = generateLabelRange(min, max, distance);
+  t.deepEqual(range, [100, 150]);
+});
 
 test("if getting minimum and maximum from a range works", t => {
   const { min, max } = getMinMax([-1, 0, -2, 5, 6, 10000, 2, -1100]);
   t.is(min, -1100);
   t.is(max, 10000);
 });
+
+test("if axis label can be set", t => {
+  const x = 0;
+  const y = 0;
+  const text = "bla";
+  const options = {
+    camelCase: "to test param-case"
+  };
+  const actual = axisLabel(x, y, text, options);
+  t.is(
+    actual,
+    `<g><text camel-case="to test param-case" x="${x}" y="${y}">${text}</text></g>`
+  );
+});
+
 test("if polyline includes all data points", t => {
   const l = polyline([0, 1], [2, 3]);
 

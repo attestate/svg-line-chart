@@ -11,7 +11,9 @@ import {
   scaleDates,
   scalePoints,
   renderAxis,
-  getMinMax
+  axisLabel,
+  getMinMax,
+  generateLabelRange
 } from "../src/index.mjs";
 
 let range =
@@ -27,16 +29,23 @@ http
   .createServer((req, res) => {
     const margin = 10;
     const width = 70;
-    const offsetX = 5;
+    const offsetX = 10;
     const offsetY = 5;
     const height = 35;
     const strokeWidth = 0.1;
     const stroke = "black";
     const title = "A line chart";
+    const labelOptions = {
+      fontSize: 1.5
+    };
+    const distance = 50;
 
     const x = scaleDates(offsetX, width, range);
     const { min, max } = getMinMax(data, margin);
     const y = scalePoints(offsetY, height, min, max, data);
+    const yPoints = generateLabelRange(min, max, distance);
+    const yScaledLabels = scalePoints(offsetY, height, min, max, yPoints);
+
     const l = polyline(x, y, { strokeWidth });
 
     res.writeHead(200, { "Content-Type": "text/html" });
@@ -51,6 +60,18 @@ http
         ${renderAxis(offsetX, width, height - offsetY, height - offsetY, {
           stroke,
           strokeWidth
+        })}
+        ${axisLabel(0, (height - offsetY) / 2, "PRICE (EUR)", labelOptions)}
+        ${yPoints.map((p, i) => {
+          const scaledPoint = yScaledLabels[i];
+          // NOTE: +0.5 is to center text vertically
+          return axisLabel(offsetX / 1.5, scaledPoint + 0.5, p, labelOptions);
+        })}
+        ${yScaledLabels.map(p => {
+          return renderAxis(offsetX, width, p, p, {
+            stroke: "lightgrey",
+            strokeWidth
+          });
         })}
       </svg>
     `);
