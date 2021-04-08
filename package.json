@@ -1,0 +1,27 @@
+{
+  "name": "svg-line-chart",
+  "version": "0.0.1",
+  "description": "A simple way to generate svg line charts in nodejs",
+  "main": "src/index.mjs",
+  "scripts": {
+    "test": "ava --verbose"
+  },
+  "keywords": [
+    "node",
+    "line",
+    "chart",
+    "svg",
+    "generate",
+    "server-side"
+  ],
+  "author": "Tim Daubenschütz <tim@daubenschuetz.de> (https://timdaub.github.io)",
+  "license": "GPL-3.0-only",
+  "dependencies": {
+    "date-fns": "2.20.0",
+    "htm": "3.0.4",
+    "vhtml": "2.2.0"
+  },
+  "devDependencies": {
+    "ava": "3.15.0"
+  }
+}
