@@ -7,11 +7,13 @@ const html = htm.bind(vhtml);
 
 const defaultOptions = {
   fill: "none",
-  stroke: "#0074d9",
-  strokeWidth: "3"
+  stroke: "black",
+  strokeWidth: "1"
 };
 
 export function polyline(x, y, options = defaultOptions) {
+  options = { ...defaultOptions, ...options };
+
   if (x.length !== y.length) {
     throw new Error(
       `x and y parameters need to be of same length. They are not: x (${
@@ -77,8 +79,22 @@ export function pointWidth(total, range, equalityOp) {
   return total / count;
 }
 
-export function rangeToPoints(total, range, equalityOp = isSameDay) {
+export function scaleDates(total, range, equalityOp = isSameDay) {
   range = sortRangeAsc(range);
   const pWidth = pointWidth(total, range, equalityOp);
   return range.map((d, i) => i * pWidth);
+}
+
+export function scalePoints(total, range) {
+  var max = Math.max.apply(Math, range);
+  var min = Math.min.apply(Math, range);
+  const maxAllowed = total;
+  const minAllowed = 0;
+
+  // NOTE: For explaination see: https://stackoverflow.com/a/31687097/1263876
+  const scale = val =>
+    total -
+    ((maxAllowed - minAllowed) * (val - min)) / (max - min) +
+    minAllowed;
+  return range.map(scale);
 }

@@ -7,7 +7,8 @@ import {
   sortRangeAsc,
   countUnique,
   pointWidth,
-  rangeToPoints
+  scaleDates,
+  scalePoints
 } from "../src/index.mjs";
 
 test("if polyline includes all data points", t => {
@@ -104,18 +105,33 @@ test("if point width is calculated correctly", t => {
   t.is(width, 1);
 });
 
-
 test("if range to points works", t => {
   const range = [
     new Date("2021-01-01T00:00:00.000Z"),
+    new Date("2021-01-02T00:00:00.000Z"),
     new Date("2021-01-02T00:00:00.000Z"),
     new Date("2021-01-03T00:00:00.000Z")
   ];
 
   const total = 3;
 
-  const [p1, p2, p3] = rangeToPoints(total, range, isSameDay);
+  const [p1, p2, p3] = scaleDates(total, range, isSameDay);
   t.is(p1, 0);
   t.is(p2, 1);
   t.is(p3, 2);
+});
+
+test("if scaling a simple set of points works", t => {
+  const points = [0, 1, 1];
+  const [p1, p2, p3] = scalePoints(1, points);
+  t.is(p1, 1);
+  t.is(p2, 0);
+  t.is(p3, 0);
+});
+
+test("if scaling a complex set of points works", t => {
+  const points = [0, 5];
+  const [p1, p2, p3] = scalePoints(10, points);
+  t.is(p1, 10);
+  t.is(p2, 0);
 });

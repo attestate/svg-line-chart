@@ -8,3 +8,7 @@ easier. `node-svg-line-chart` is an attempt at making it easier.
 ```bash
 $ npm i node-svg-line-chart
 ```
+
+## References
+
+- https://css-tricks.com/how-to-make-charts-with-svg/
