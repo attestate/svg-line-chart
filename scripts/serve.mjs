@@ -61,7 +61,16 @@ http
           stroke,
           strokeWidth
         })}
-        ${axisLabel(0, (height - offsetY) / 2, "PRICE (EUR)", labelOptions)}
+        ${axisLabel(
+          0,
+          (height - offsetY) / 2,
+          "PRICE (EUR)",
+          {
+            style: "transform: rotate(-90deg);",
+            ...labelOptions
+          },
+          { style: "transform: translate(-15%, 55%)" }
+        )}
         ${yPoints.map((p, i) => {
           const scaledPoint = yScaledLabels[i];
           // NOTE: +0.5 is to center text vertically
@@ -70,7 +79,7 @@ http
         ${yScaledLabels.map(p => {
           return renderAxis(offsetX, width, p, p, {
             stroke: "lightgrey",
-            strokeWidth
+            strokeWidth: strokeWidth / 3
           });
         })}
       </svg>

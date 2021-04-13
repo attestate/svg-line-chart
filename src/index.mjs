@@ -126,10 +126,10 @@ export function renderAxis(x1, x2, y1, y2, options) {
   `;
 }
 
-export function axisLabel(x, y, text, options) {
+export function axisLabel(x, y, text, options, containerOptions) {
   options = toParamCase(options);
   return html`
-    <g>
+    <g ...${containerOptions}>
       <text ...${options} x=${x} y=${y}>${text}</text>
     </g>
   `;
