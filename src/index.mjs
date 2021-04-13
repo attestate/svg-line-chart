@@ -1,7 +1,13 @@
 // @format
 import htm from "htm";
 import vhtml from "vhtml";
-import { isBefore, isSameDay, format } from "date-fns";
+import {
+  eachMonthOfInterval,
+  isBefore,
+  isAfter,
+  isSameDay,
+  format
+} from "date-fns";
 import { paramCase } from "param-case";
 
 const html = htm.bind(vhtml);
@@ -77,10 +83,50 @@ export function pointWidth(total, range, equalityOp) {
   return total / count;
 }
 
+export function insertInto(range, candidates) {
+  let insertedAt = [];
+  let cCopy = [...candidates];
+
+  for (let i = 0; i < range.length; i++) {
+    const date = range[i];
+    for (let j = 0; j < cCopy.length; j++) {
+      const candidate = cCopy[j];
+
+      if (isAfter(date, candidate)) {
+        insertedAt.push(i);
+        cCopy.splice(j, 1);
+        i = 0;
+      }
+    }
+  }
+
+  if (cCopy.length > 0) {
+    for (let i = range.length; i < range.length + cCopy.length; i++) {
+      insertedAt.push(i);
+    }
+  }
+
+  return insertedAt;
+}
+
 export function scaleDates(from, to, range, equalityOp = isSameDay) {
   range = sortRangeAsc(range);
+
   const pWidth = pointWidth(to - from, range, equalityOp);
-  return range.map((d, i) => from + i * pWidth);
+  const x = range.map((d, i) => from + i * pWidth);
+
+  const months = eachMonthOfInterval({
+    start: range[0],
+    end: range[range.length - 1]
+  });
+  const insertedAt = insertInto(range, months);
+  const names = months.map(d => format(d, "MMM yyyy"));
+  const labels = insertedAt.map((i, j) => ({
+    pos: from + i * pWidth,
+    name: names[j]
+  }));
+
+  return { x, labels };
 }
 
 export function getMinMax(range, margin = 0) {

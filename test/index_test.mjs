@@ -13,7 +13,8 @@ import {
   renderAxis,
   axisLabel,
   getMinMax,
-  generateLabelRange
+  generateLabelRange,
+  insertInto
 } from "../src/index.mjs";
 
 test("if generating a label range works", t => {
@@ -148,10 +149,32 @@ test("if range to points works", t => {
 
   const total = 3;
 
-  const [p1, p2, p3] = scaleDates(0, total, range, isSameDay);
+  const { x } = scaleDates(0, total, range, isSameDay);
+  const [p1, p2, p3] = x;
   t.is(p1, 0);
   t.is(p2, 1);
   t.is(p3, 2);
+});
+
+test("if labels are shown at right position", t => {
+  const range = [
+    new Date("2021-01-01T00:00:00.000Z"),
+    new Date("2021-02-01T00:00:00.000Z"),
+    new Date("2021-03-01T00:00:00.000Z")
+  ];
+
+  const total = 3;
+
+  const { x, labels } = scaleDates(0, total, range, isSameDay);
+  const [p1, p2, p3] = x;
+  t.is(p1, 0);
+  t.is(p2, 1);
+  t.is(p3, 2);
+
+  const [l1, l2, l3] = labels;
+  t.is(l1.pos, 0);
+  t.is(l2.pos, 1);
+  t.is(l3.pos, 2);
 });
 
 test("if scaling a simple set of points works", t => {
@@ -209,4 +232,24 @@ test("if rendering an axis is possible", t => {
   t.true(
     actual.includes(`<line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>`)
   );
+});
+
+test("if dates can be inserted into a range of dates", t => {
+  const exampleRange = [
+    new Date("2021-01-01T00:00:00.000Z"),
+    new Date("2021-01-02T00:00:00.000Z"),
+    new Date("2021-01-02T00:00:00.000Z"),
+    new Date("2021-01-03T00:00:00.000Z")
+  ];
+  const candidates = [
+    new Date("2020-12-31T00:00:00.000Z"),
+    new Date("2021-01-02T12:00:00.000Z"),
+    new Date("2021-01-04T00:00:00.000Z"),
+    new Date("2021-01-05T00:00:00.000Z")
+  ];
+  const originalCandidatesLength = candidates.length;
+  const rangeLength = exampleRange.length;
+
+  const insertedAt = insertInto(exampleRange, candidates);
+  t.deepEqual(insertedAt, [0, 3, 4, 5]);
 });

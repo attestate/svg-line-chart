@@ -40,7 +40,8 @@ http
     };
     const distance = 50;
 
-    const x = scaleDates(offsetX, width, range);
+    const { x, labels } = scaleDates(offsetX, width, range);
+
     const { min, max } = getMinMax(data, margin);
     const y = scalePoints(offsetY, height, min, max, data);
     const yPoints = generateLabelRange(min, max, distance);
@@ -78,6 +79,15 @@ http
         })}
         ${yScaledLabels.map(p => {
           return renderAxis(offsetX, width, p, p, {
+            stroke: "lightgrey",
+            strokeWidth: strokeWidth / 3
+          });
+        })}
+        ${labels.map(({ pos, name }) => {
+          return axisLabel(pos, height - offsetY / 2, name, labelOptions);
+        })}
+        ${labels.map(({ pos }) => {
+          return renderAxis(pos, pos, 0, height - offsetY, {
             stroke: "lightgrey",
             strokeWidth: strokeWidth / 3
           });
