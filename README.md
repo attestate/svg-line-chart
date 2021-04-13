@@ -70,6 +70,10 @@ const svgChart = plot(
 
 ## Changelog
 
+### 0.0.4
+
+- Target node again
+
 ### 0.0.3
 
 - Target node
