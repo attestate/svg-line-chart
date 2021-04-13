@@ -1,2 +1,253 @@
-var t,n,e,r,a=require("htm"),o=require("vhtml"),i=require("date-fns"),u=require("param-case");function l(t){return t&&"object"==typeof t&&"default"in t?t:{default:t}}function s(){return(s=Object.assign||function(t){for(var n=1;n<arguments.length;n++){var e=arguments[n];for(var r in e)Object.prototype.hasOwnProperty.call(e,r)&&(t[r]=e[r])}return t}).apply(this,arguments)}function f(t,n){return n||(n=t.slice(0)),t.raw=n,t}function h(t,n){(null==n||n>t.length)&&(n=t.length);for(var e=0,r=new Array(n);e<n;e++)r[e]=t[e];return r}function c(t,n){var e;if("undefined"==typeof Symbol||null==t[Symbol.iterator]){if(Array.isArray(t)||(e=function(t,n){if(t){if("string"==typeof t)return h(t,n);var e=Object.prototype.toString.call(t).slice(8,-1);return"Object"===e&&t.constructor&&(e=t.constructor.name),"Map"===e||"Set"===e?Array.from(t):"Arguments"===e||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(e)?h(t,n):void 0}}(t))||n&&t&&"number"==typeof t.length){e&&(t=e);var r=0;return function(){return r>=t.length?{done:!0}:{done:!1,value:t[r++]}}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}return(e=t[Symbol.iterator]()).next.bind(e)}var p=l(a).default.bind(l(o).default);function g(t,e,r){if(r=M(r),t.length!==e.length)throw new Error("x and y parameters need to be of same length. They are not: x ("+t.length+") and y ("+e.length+").");if(0===t.length)throw new Error("Length of data x and y cannot be zero");for(var a="",o=0;o<t.length;o++)a+=t[o]+","+e[o]+" ";return a=a.slice(0,-1),p(n||(n=f(["\n    <polyline ..."," points=","/>\n  "])),r,a)}function y(t){return t.sort(function(t,n){return t-n})}function m(t,n){if(t.length<2)return t.length;for(var e=[[t[0]]],r=1;r<t.length;r++){for(var a,o=t[r],i=void 0,u=c(e);!(a=u()).done;){var l=a.value;n(o,l[0])&&(i=l)}i?i.push(o):e.push([o])}return e.length}function v(t,n,e){return t/m(n,e)}function x(t,n){for(var e=[],r=[].concat(n),a=0;a<t.length;a++)for(var o=t[a],u=0;u<r.length;u++){var l=r[u];(i.isEqual(o,l)||i.isAfter(o,l))&&(e.push(a),r.splice(u,1),a=0)}if(r.length>0)for(var s=t.length;s<t.length+r.length;s++)e.push(s);return e}function d(t,n,e,r){void 0===r&&(r=i.isSameDay),e=y(e);var a=v(n-t,e,r),o=e.map(function(n,e){return t+e*a}),u=i.eachMonthOfInterval({start:e[0],end:e[e.length-1]}),l=x(e,u),s=u.map(function(t){return i.format(t,"MMM yyyy")});return{x:o,labels:l.map(function(n,e){return{pos:t+n*a,name:s[e]}})}}function b(t,n){void 0===n&&(n=0);var e=Math.max.apply(Math,t)+n;return{min:Math.min.apply(Math,t)-n,max:e}}function w(t,n,e,r,a){var o=t,i=n;return a.map(function(a){return n-2*t-(i-o)*(a-e)/(r-e)+o})}function M(t){var n={};return Object.keys(t).forEach(function(e){n[u.paramCase(e)]=t[e]}),n}function A(t,n,r,a,o){return o=M(o),p(e||(e=f(["\n    <g ...",">\n      <line x1="," x2="," y1="," y2=","></line>\n    </g>\n  "])),o,t,n,r,a)}function L(t,n,e,a,o){return a=M(a),p(r||(r=f(["\n    <g ...",">\n      <text ..."," x="," y=",">","</text>\n    </g>\n  "])),o,a,t,n,e)}function j(t,n,e){for(var r=[],a=Math.floor(t);a<=n;a++)a%e==0&&r.push(a);return r}exports.axisLabel=L,exports.countUnique=m,exports.generateLabelRange=j,exports.getMinMax=b,exports.insertInto=x,exports.plot=function(n,e){var r=d(10,e.width,n.x),a=r.x,o=r.labels,i=b(n.y,e.margin),u=i.min,l=i.max,h=w(5,e.height,u,l,n.y),c=j(u,l,e.yDistance),y=w(5,e.height,u,l,c),m=g(a,h,e.line);return p(t||(t=f(['\n      <svg viewBox="0 0 '," ",'">\n        <title>',"</title>\n        ","\n        ","\n        ","\n        ","\n        ","\n        ","\n        ","\n        ","\n      </svg>\n    "])),e.width,e.height,e.title,A(10,10,0,e.height-5,e.xAxis),A(10,e.width,e.height-5,e.height-5,e.yAxis),L(0,(e.height-5)/2,e.yLabel.name,s({style:"transform: rotate(-90deg);"},e.yLabel),{style:"transform: translate(-15%, 55%)"}),c.map(function(t,n){return L(10/1.5,y[n]+.5,t,e.yLabel)}),y.map(function(t){return A(10,e.width,t,t,e.yLabel)}),o.map(function(t){return L(t.pos,e.height-2.5,t.name,e.xLabel)}),o.map(function(t,n){var r=t.pos;if(0!==n)return A(r,r,0,e.height-5,e.xLabel)}),m)},exports.pointWidth=v,exports.polyline=g,exports.renderAxis=A,exports.scaleDates=d,exports.scalePoints=w,exports.sortRangeAsc=y,exports.toParamCase=M;
+var htm = require('htm');
+var vhtml = require('vhtml');
+var dateFns = require('date-fns');
+var paramCase = require('param-case');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var htm__default = /*#__PURE__*/_interopDefaultLegacy(htm);
+var vhtml__default = /*#__PURE__*/_interopDefaultLegacy(vhtml);
+
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+const html = htm__default['default'].bind(vhtml__default['default']);
+const offsetX = 10;
+const offsetY = 5;
+function plot(data, options) {
+  const {
+    x,
+    labels
+  } = scaleDates(offsetX, options.width, data.x);
+  const {
+    min,
+    max
+  } = getMinMax(data.y, options.margin);
+  const y = scalePoints(offsetY, options.height, min, max, data.y);
+  const yPoints = generateLabelRange(min, max, options.yDistance);
+  const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
+  const l = polyline(x, y, options.line);
+  return html`
+      <svg viewBox="0 0 ${options.width} ${options.height}">
+        <title>${options.title}</title>
+        ${renderAxis(offsetX, offsetX, 0, options.height - offsetY, options.xAxis)}
+        ${renderAxis(offsetX, options.width, options.height - offsetY, options.height - offsetY, options.yAxis)}
+        ${axisLabel(0, (options.height - offsetY) / 2, options.yLabel.name, _extends({
+    style: "transform: rotate(-90deg);"
+  }, options.yLabel), {
+    style: "transform: translate(-15%, 55%)"
+  })}
+        ${yPoints.map((p, i) => {
+    const scaledPoint = yScaledLabels[i]; // NOTE: +0.5 is to center text vertically
+
+    return axisLabel(offsetX / 1.5, scaledPoint + 0.5, p, options.yLabel);
+  })}
+        ${yScaledLabels.map(p => {
+    return renderAxis(offsetX, options.width, p, p, options.yLabel);
+  })}
+        ${labels.map(({
+    pos,
+    name
+  }) => {
+    return axisLabel(pos, options.height - offsetY / 2, name, options.xLabel);
+  })}
+        ${labels.map(({
+    pos
+  }, i) => {
+    // NOTE: We don't want to draw over the y axis, hence for the first
+    // element we don't draw.
+    if (i === 0) return;
+    return renderAxis(pos, pos, 0, options.height - offsetY, options.xLabel);
+  })}
+        ${l}
+      </svg>
+    `;
+}
+function polyline(x, y, options) {
+  options = toParamCase(options);
+
+  if (x.length !== y.length) {
+    throw new Error(`x and y parameters need to be of same length. They are not: x (${x.length}) and y (${y.length}).`);
+  }
+
+  if (x.length === 0) {
+    throw new Error("Length of data x and y cannot be zero");
+  }
+
+  let points = "";
+
+  for (let i = 0; i < x.length; i++) {
+    points += `${x[i]},${y[i]} `;
+  } // NOTE: We pop the last character as it's an unneeded space.
+
+
+  points = points.slice(0, -1);
+  return html`
+    <polyline ...${options} points=${points}/>
+  `;
+}
+function sortRangeAsc(range) {
+  return range.sort((a, b) => a - b);
+}
+function countUnique(range, equalityOp) {
+  if (range.length < 2) {
+    return range.length;
+  }
+
+  let buckets = [[range[0]]]; // NOTE: We start at `1` as we've already put element `0` in the first
+  // bucket.
+
+  for (let i = 1; i < range.length; i++) {
+    const date = range[i];
+    let match;
+
+    for (let bucket of buckets) {
+      if (equalityOp(date, bucket[0])) {
+        match = bucket;
+      }
+    }
+
+    if (match) {
+      match.push(date);
+    } else {
+      buckets.push([date]);
+    }
+  }
+
+  return buckets.length;
+} // NOTE: Expects sorted `range` (ASC).
+
+function pointWidth(total, range, equalityOp) {
+  const count = countUnique(range, equalityOp);
+  return total / count;
+}
+function insertInto(range, candidates) {
+  let insertedAt = [];
+  let cCopy = [...candidates];
+
+  for (let i = 0; i < range.length; i++) {
+    const date = range[i];
+
+    for (let j = 0; j < cCopy.length; j++) {
+      const candidate = cCopy[j];
+
+      if (dateFns.isEqual(date, candidate)) {
+        insertedAt.push(i);
+        cCopy.splice(j, 1);
+        i = 0;
+      } else if (dateFns.isAfter(date, candidate)) {
+        insertedAt.push(i);
+        cCopy.splice(j, 1);
+        i = 0;
+      }
+    }
+  }
+
+  if (cCopy.length > 0) {
+    for (let i = range.length; i < range.length + cCopy.length; i++) {
+      insertedAt.push(i);
+    }
+  }
+
+  return insertedAt;
+}
+function scaleDates(from, to, range, equalityOp = dateFns.isSameDay) {
+  range = sortRangeAsc(range);
+  const pWidth = pointWidth(to - from, range, equalityOp);
+  const x = range.map((d, i) => from + i * pWidth);
+  const months = dateFns.eachMonthOfInterval({
+    start: range[0],
+    end: range[range.length - 1]
+  });
+  const insertedAt = insertInto(range, months);
+  const names = months.map(d => dateFns.format(d, "MMM yyyy"));
+  const labels = insertedAt.map((i, j) => ({
+    pos: from + i * pWidth,
+    name: names[j]
+  }));
+  return {
+    x,
+    labels
+  };
+}
+function getMinMax(range, margin = 0) {
+  const max = Math.max.apply(Math, range) + margin;
+  const min = Math.min.apply(Math, range) - margin;
+  return {
+    min,
+    max
+  };
+}
+function scalePoints(from, to, min, max, range) {
+  const minAllowed = from;
+  const maxAllowed = to; // NOTE: For explaination see: https://stackoverflow.com/a/31687097/1263876
+
+  const scale = val => to - from * 2 - (maxAllowed - minAllowed) * (val - min) / (max - min) + minAllowed;
+
+  return range.map(scale);
+}
+function toParamCase(obj) {
+  let pcObj = {};
+  Object.keys(obj).forEach(key => {
+    pcObj[paramCase.paramCase(key)] = obj[key];
+  });
+  return pcObj;
+}
+function renderAxis(x1, x2, y1, y2, options) {
+  options = toParamCase(options);
+  return html`
+    <g ...${options}>
+      <line x1=${x1} x2=${x2} y1=${y1} y2=${y2}></line>
+    </g>
+  `;
+}
+function axisLabel(x, y, text, options, containerOptions) {
+  options = toParamCase(options);
+  return html`
+    <g ...${containerOptions}>
+      <text ...${options} x=${x} y=${y}>${text}</text>
+    </g>
+  `;
+}
+function generateLabelRange(min, max, distance) {
+  const labels = [];
+  const start = Math.floor(min);
+
+  for (let i = start; i <= max; i++) {
+    if (i % distance === 0) {
+      labels.push(i);
+    }
+  }
+
+  return labels;
+}
+
+exports.axisLabel = axisLabel;
+exports.countUnique = countUnique;
+exports.generateLabelRange = generateLabelRange;
+exports.getMinMax = getMinMax;
+exports.insertInto = insertInto;
+exports.plot = plot;
+exports.pointWidth = pointWidth;
+exports.polyline = polyline;
+exports.renderAxis = renderAxis;
+exports.scaleDates = scaleDates;
+exports.scalePoints = scalePoints;
+exports.sortRangeAsc = sortRangeAsc;
+exports.toParamCase = toParamCase;
 //# sourceMappingURL=line-chart.js.map

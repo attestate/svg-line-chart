@@ -1,2 +1,255 @@
-!function(n,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports,require("htm"),require("vhtml"),require("date-fns"),require("param-case")):"function"==typeof define&&define.amd?define(["exports","htm","vhtml","date-fns","param-case"],t):t((n||self).svgLineChart={},n.htm,n.vhtml,n.dateFns,n.paramCase)}(this,function(n,t,e,r,a){function o(n){return n&&"object"==typeof n&&"default"in n?n:{default:n}}var i,u,l,f;function h(){return(h=Object.assign||function(n){for(var t=1;t<arguments.length;t++){var e=arguments[t];for(var r in e)Object.prototype.hasOwnProperty.call(e,r)&&(n[r]=e[r])}return n}).apply(this,arguments)}function s(n,t){return t||(t=n.slice(0)),n.raw=t,n}function c(n,t){(null==t||t>n.length)&&(t=n.length);for(var e=0,r=new Array(t);e<t;e++)r[e]=n[e];return r}function p(n,t){var e;if("undefined"==typeof Symbol||null==n[Symbol.iterator]){if(Array.isArray(n)||(e=function(n,t){if(n){if("string"==typeof n)return c(n,t);var e=Object.prototype.toString.call(n).slice(8,-1);return"Object"===e&&n.constructor&&(e=n.constructor.name),"Map"===e||"Set"===e?Array.from(n):"Arguments"===e||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(e)?c(n,t):void 0}}(n))||t&&n&&"number"==typeof n.length){e&&(n=e);var r=0;return function(){return r>=n.length?{done:!0}:{done:!1,value:n[r++]}}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}return(e=n[Symbol.iterator]()).next.bind(e)}var g=o(t).default.bind(o(e).default),y=10;function m(n,t,e){if(e=L(e),n.length!==t.length)throw new Error("x and y parameters need to be of same length. They are not: x ("+n.length+") and y ("+t.length+").");if(0===n.length)throw new Error("Length of data x and y cannot be zero");for(var r="",a=0;a<n.length;a++)r+=n[a]+","+t[a]+" ";return r=r.slice(0,-1),g(u||(u=s(["\n    <polyline ..."," points=","/>\n  "])),e,r)}function d(n){return n.sort(function(n,t){return n-t})}function v(n,t){if(n.length<2)return n.length;for(var e=[[n[0]]],r=1;r<n.length;r++){for(var a,o=n[r],i=void 0,u=p(e);!(a=u()).done;){var l=a.value;t(o,l[0])&&(i=l)}i?i.push(o):e.push([o])}return e.length}function b(n,t,e){return n/v(t,e)}function x(n,t){for(var e=[],a=[].concat(t),o=0;o<n.length;o++)for(var i=n[o],u=0;u<a.length;u++){var l=a[u];(r.isEqual(i,l)||r.isAfter(i,l))&&(e.push(o),a.splice(u,1),o=0)}if(a.length>0)for(var f=n.length;f<n.length+a.length;f++)e.push(f);return e}function w(n,t,e,a){void 0===a&&(a=r.isSameDay),e=d(e);var o=b(t-n,e,a),i=e.map(function(t,e){return n+e*o}),u=r.eachMonthOfInterval({start:e[0],end:e[e.length-1]}),l=x(e,u),f=u.map(function(n){return r.format(n,"MMM yyyy")});return{x:i,labels:l.map(function(t,e){return{pos:n+t*o,name:f[e]}})}}function M(n,t){void 0===t&&(t=0);var e=Math.max.apply(Math,n)+t;return{min:Math.min.apply(Math,n)-t,max:e}}function A(n,t,e,r,a){var o=n,i=t;return a.map(function(a){return t-2*n-(i-o)*(a-e)/(r-e)+o})}function L(n){var t={};return Object.keys(n).forEach(function(e){t[a.paramCase(e)]=n[e]}),t}function j(n,t,e,r,a){return a=L(a),g(l||(l=s(["\n    <g ...",">\n      <line x1="," x2="," y1="," y2=","></line>\n    </g>\n  "])),a,n,t,e,r)}function O(n,t,e,r,a){return r=L(r),g(f||(f=s(["\n    <g ...",">\n      <text ..."," x="," y=",">","</text>\n    </g>\n  "])),a,r,n,t,e)}function S(n,t,e){for(var r=[],a=Math.floor(n);a<=t;a++)a%e==0&&r.push(a);return r}n.axisLabel=O,n.countUnique=v,n.generateLabelRange=S,n.getMinMax=M,n.insertInto=x,n.plot=function(n,t){var e=w(y,t.width,n.x),r=e.x,a=e.labels,o=M(n.y,t.margin),u=o.min,l=o.max,f=A(5,t.height,u,l,n.y),c=S(u,l,t.yDistance),p=A(5,t.height,u,l,c),d=m(r,f,t.line);return g(i||(i=s(['\n      <svg viewBox="0 0 '," ",'">\n        <title>',"</title>\n        ","\n        ","\n        ","\n        ","\n        ","\n        ","\n        ","\n        ","\n      </svg>\n    "])),t.width,t.height,t.title,j(y,y,0,t.height-5,t.xAxis),j(y,t.width,t.height-5,t.height-5,t.yAxis),O(0,(t.height-5)/2,t.yLabel.name,h({style:"transform: rotate(-90deg);"},t.yLabel),{style:"transform: translate(-15%, 55%)"}),c.map(function(n,e){return O(y/1.5,p[e]+.5,n,t.yLabel)}),p.map(function(n){return j(y,t.width,n,n,t.yLabel)}),a.map(function(n){return O(n.pos,t.height-2.5,n.name,t.xLabel)}),a.map(function(n,e){var r=n.pos;if(0!==e)return j(r,r,0,t.height-5,t.xLabel)}),d)},n.pointWidth=b,n.polyline=m,n.renderAxis=j,n.scaleDates=w,n.scalePoints=A,n.sortRangeAsc=d,n.toParamCase=L});
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('htm'), require('vhtml'), require('date-fns'), require('param-case')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'htm', 'vhtml', 'date-fns', 'param-case'], factory) :
+  (global = global || self, factory(global.svgLineChart = {}, global.htm, global.vhtml, global.dateFns, global.paramCase));
+}(this, (function (exports, htm, vhtml, dateFns, paramCase) {
+  function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+  var htm__default = /*#__PURE__*/_interopDefaultLegacy(htm);
+  var vhtml__default = /*#__PURE__*/_interopDefaultLegacy(vhtml);
+
+  function _extends() {
+    _extends = Object.assign || function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+
+      return target;
+    };
+
+    return _extends.apply(this, arguments);
+  }
+
+  const html = htm__default['default'].bind(vhtml__default['default']);
+  const offsetX = 10;
+  const offsetY = 5;
+  function plot(data, options) {
+    const {
+      x,
+      labels
+    } = scaleDates(offsetX, options.width, data.x);
+    const {
+      min,
+      max
+    } = getMinMax(data.y, options.margin);
+    const y = scalePoints(offsetY, options.height, min, max, data.y);
+    const yPoints = generateLabelRange(min, max, options.yDistance);
+    const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
+    const l = polyline(x, y, options.line);
+    return html`
+      <svg viewBox="0 0 ${options.width} ${options.height}">
+        <title>${options.title}</title>
+        ${renderAxis(offsetX, offsetX, 0, options.height - offsetY, options.xAxis)}
+        ${renderAxis(offsetX, options.width, options.height - offsetY, options.height - offsetY, options.yAxis)}
+        ${axisLabel(0, (options.height - offsetY) / 2, options.yLabel.name, _extends({
+    style: "transform: rotate(-90deg);"
+  }, options.yLabel), {
+    style: "transform: translate(-15%, 55%)"
+  })}
+        ${yPoints.map((p, i) => {
+    const scaledPoint = yScaledLabels[i]; // NOTE: +0.5 is to center text vertically
+
+    return axisLabel(offsetX / 1.5, scaledPoint + 0.5, p, options.yLabel);
+  })}
+        ${yScaledLabels.map(p => {
+    return renderAxis(offsetX, options.width, p, p, options.yLabel);
+  })}
+        ${labels.map(({
+    pos,
+    name
+  }) => {
+    return axisLabel(pos, options.height - offsetY / 2, name, options.xLabel);
+  })}
+        ${labels.map(({
+    pos
+  }, i) => {
+    // NOTE: We don't want to draw over the y axis, hence for the first
+    // element we don't draw.
+    if (i === 0) return;
+    return renderAxis(pos, pos, 0, options.height - offsetY, options.xLabel);
+  })}
+        ${l}
+      </svg>
+    `;
+  }
+  function polyline(x, y, options) {
+    options = toParamCase(options);
+
+    if (x.length !== y.length) {
+      throw new Error(`x and y parameters need to be of same length. They are not: x (${x.length}) and y (${y.length}).`);
+    }
+
+    if (x.length === 0) {
+      throw new Error("Length of data x and y cannot be zero");
+    }
+
+    let points = "";
+
+    for (let i = 0; i < x.length; i++) {
+      points += `${x[i]},${y[i]} `;
+    } // NOTE: We pop the last character as it's an unneeded space.
+
+
+    points = points.slice(0, -1);
+    return html`
+    <polyline ...${options} points=${points}/>
+  `;
+  }
+  function sortRangeAsc(range) {
+    return range.sort((a, b) => a - b);
+  }
+  function countUnique(range, equalityOp) {
+    if (range.length < 2) {
+      return range.length;
+    }
+
+    let buckets = [[range[0]]]; // NOTE: We start at `1` as we've already put element `0` in the first
+    // bucket.
+
+    for (let i = 1; i < range.length; i++) {
+      const date = range[i];
+      let match;
+
+      for (let bucket of buckets) {
+        if (equalityOp(date, bucket[0])) {
+          match = bucket;
+        }
+      }
+
+      if (match) {
+        match.push(date);
+      } else {
+        buckets.push([date]);
+      }
+    }
+
+    return buckets.length;
+  } // NOTE: Expects sorted `range` (ASC).
+
+  function pointWidth(total, range, equalityOp) {
+    const count = countUnique(range, equalityOp);
+    return total / count;
+  }
+  function insertInto(range, candidates) {
+    let insertedAt = [];
+    let cCopy = [...candidates];
+
+    for (let i = 0; i < range.length; i++) {
+      const date = range[i];
+
+      for (let j = 0; j < cCopy.length; j++) {
+        const candidate = cCopy[j];
+
+        if (dateFns.isEqual(date, candidate)) {
+          insertedAt.push(i);
+          cCopy.splice(j, 1);
+          i = 0;
+        } else if (dateFns.isAfter(date, candidate)) {
+          insertedAt.push(i);
+          cCopy.splice(j, 1);
+          i = 0;
+        }
+      }
+    }
+
+    if (cCopy.length > 0) {
+      for (let i = range.length; i < range.length + cCopy.length; i++) {
+        insertedAt.push(i);
+      }
+    }
+
+    return insertedAt;
+  }
+  function scaleDates(from, to, range, equalityOp = dateFns.isSameDay) {
+    range = sortRangeAsc(range);
+    const pWidth = pointWidth(to - from, range, equalityOp);
+    const x = range.map((d, i) => from + i * pWidth);
+    const months = dateFns.eachMonthOfInterval({
+      start: range[0],
+      end: range[range.length - 1]
+    });
+    const insertedAt = insertInto(range, months);
+    const names = months.map(d => dateFns.format(d, "MMM yyyy"));
+    const labels = insertedAt.map((i, j) => ({
+      pos: from + i * pWidth,
+      name: names[j]
+    }));
+    return {
+      x,
+      labels
+    };
+  }
+  function getMinMax(range, margin = 0) {
+    const max = Math.max.apply(Math, range) + margin;
+    const min = Math.min.apply(Math, range) - margin;
+    return {
+      min,
+      max
+    };
+  }
+  function scalePoints(from, to, min, max, range) {
+    const minAllowed = from;
+    const maxAllowed = to; // NOTE: For explaination see: https://stackoverflow.com/a/31687097/1263876
+
+    const scale = val => to - from * 2 - (maxAllowed - minAllowed) * (val - min) / (max - min) + minAllowed;
+
+    return range.map(scale);
+  }
+  function toParamCase(obj) {
+    let pcObj = {};
+    Object.keys(obj).forEach(key => {
+      pcObj[paramCase.paramCase(key)] = obj[key];
+    });
+    return pcObj;
+  }
+  function renderAxis(x1, x2, y1, y2, options) {
+    options = toParamCase(options);
+    return html`
+    <g ...${options}>
+      <line x1=${x1} x2=${x2} y1=${y1} y2=${y2}></line>
+    </g>
+  `;
+  }
+  function axisLabel(x, y, text, options, containerOptions) {
+    options = toParamCase(options);
+    return html`
+    <g ...${containerOptions}>
+      <text ...${options} x=${x} y=${y}>${text}</text>
+    </g>
+  `;
+  }
+  function generateLabelRange(min, max, distance) {
+    const labels = [];
+    const start = Math.floor(min);
+
+    for (let i = start; i <= max; i++) {
+      if (i % distance === 0) {
+        labels.push(i);
+      }
+    }
+
+    return labels;
+  }
+
+  exports.axisLabel = axisLabel;
+  exports.countUnique = countUnique;
+  exports.generateLabelRange = generateLabelRange;
+  exports.getMinMax = getMinMax;
+  exports.insertInto = insertInto;
+  exports.plot = plot;
+  exports.pointWidth = pointWidth;
+  exports.polyline = polyline;
+  exports.renderAxis = renderAxis;
+  exports.scaleDates = scaleDates;
+  exports.scalePoints = scalePoints;
+  exports.sortRangeAsc = sortRangeAsc;
+  exports.toParamCase = toParamCase;
+
+})));
 //# sourceMappingURL=line-chart.umd.js.map

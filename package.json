@@ -1,6 +1,6 @@
 {
   "name": "svg-line-chart",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple way to generate svg line charts in JS",
   "source": "src/index.mjs",
   "main": "dist/line-chart.js",
@@ -8,7 +8,7 @@
   "module": "dist/line-chart.module.js",
   "unpkg": "dist/line-chart.umd.js",
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle --target node",
     "test": "ava --verbose",
     "dev": "nodemon scripts/serve.mjs",
     "git:add": "git update-index --add ./dist/line-chart.js ./dist/line-chart.js.map ./dist/line-chart.modern.js ./dist/line-chart.modern.js.map ./dist/line-chart.module.js ./dist/line-chart.module.js.map ./dist/line-chart.umd.js ./dist/line-chart.umd.js.map"

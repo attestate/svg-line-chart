@@ -10,7 +10,7 @@
 - Just generates a `<svg>` line chart. NO EXTRA JS OR CSS.
 - Responsive & Configurable
 - Unit tests & Small code base
-- Node.js & Browsers
+- Node.js (almost: & Browsers)
 
 ## Screenshot
 
@@ -69,6 +69,10 @@ const svgChart = plot(
 ```
 
 ## Changelog
+
+### 0.0.3
+
+- Target node
 
 ### 0.0.2
 
