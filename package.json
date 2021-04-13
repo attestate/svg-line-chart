@@ -3,8 +3,8 @@
   "version": "0.0.3",
   "description": "A simple way to generate svg line charts in JS",
   "source": "src/index.mjs",
-  "main": "dist/line-chart.js",
-  "exports": "./dist/line-chart.modern.js",
+  "main": "dist/line-chart.umd.js",
+  "exports": "./dist/line-chart.umd.js",
   "module": "dist/line-chart.module.js",
   "unpkg": "dist/line-chart.umd.js",
   "scripts": {
@@ -13,7 +13,11 @@
     "dev": "nodemon scripts/serve.mjs",
     "git:add": "git update-index --add ./dist/line-chart.js ./dist/line-chart.js.map ./dist/line-chart.modern.js ./dist/line-chart.modern.js.map ./dist/line-chart.module.js ./dist/line-chart.module.js.map ./dist/line-chart.umd.js ./dist/line-chart.umd.js.map"
   },
-  "pre-commit": ["test", "build", "git:add"],
+  "pre-commit": [
+    "test",
+    "build",
+    "git:add"
+  ],
   "keywords": [
     "node",
     "line",
@@ -25,15 +29,17 @@
   "author": "Tim Daubenschütz <tim@daubenschuetz.de> (https://timdaub.github.io)",
   "license": "GPL-3.0-only",
   "dependencies": {
-    "date-fns": "2.20.0",
-    "htm": "3.0.4",
-    "param-case": "3.0.4",
-    "vhtml": "2.2.0"
-  },
-  "devDependencies": {
     "ava": "3.15.0",
     "microbundle": "0.13.0",
     "nodemon": "2.0.7",
     "pre-commit": "1.2.2"
+  },
+  "peerDependencies": {
+    "date-fns": "2.20.0",
+    "param-case": "3.0.4",
+    "vhtml": "2.2.0"
+  },
+  "devDependencies": {
+    "param-case": "3.0.4"
   }
 }
