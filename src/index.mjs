@@ -3,7 +3,6 @@ import htm from "htm";
 import vhtml from "vhtml";
 import {
   eachMonthOfInterval,
-  isBefore,
   isAfter,
   isSameDay,
   format,
@@ -47,7 +46,7 @@ export function plot(data, options) {
         ${axisLabel(
           0,
           (options.height - offsetY) / 2,
-          "PRICE (EUR)",
+          options.yLabel.name,
           {
             style: "transform: rotate(-90deg);",
             ...options.yLabel

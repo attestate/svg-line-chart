@@ -47,7 +47,8 @@ http
         yLabel: {
           strokeWidth: 0.05,
           stroke: "lightgrey",
-          fontSize: 1.5
+          fontSize: 1.5,
+          name: "PRICE (EUR)"
         },
         yDistance: 50
       }
