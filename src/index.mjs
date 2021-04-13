@@ -28,7 +28,6 @@ export function plot(data, options) {
   return html`
       <svg viewBox="0 0 ${options.width} ${options.height}">
         <title>${options.title}</title>
-        ${l}
         ${renderAxis(
           offsetX,
           offsetX,
@@ -69,7 +68,10 @@ export function plot(data, options) {
             options.xLabel
           );
         })}
-        ${labels.map(({ pos }) => {
+        ${labels.map(({ pos }, i) => {
+          // NOTE: We don't want to draw over the y axis, hence for the first
+          // element we don't draw.
+          if (i === 0) return;
           return renderAxis(
             pos,
             pos,
@@ -78,6 +80,7 @@ export function plot(data, options) {
             options.xLabel
           );
         })}
+        ${l}
       </svg>
     `;
 }

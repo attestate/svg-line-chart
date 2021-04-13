@@ -12,6 +12,10 @@
 - Unit tests & Small code base
 - Node.js & Browsers
 
+## Screenshot
+
+![](./assets/screenshot.png)
+
 ## Installation
 
 Works for browser and node.js.
@@ -65,6 +69,10 @@ const svgChart = plot(
 ```
 
 ## Changelog
+
+### 0.0.2
+
+- Improve axis and line rendering through proper render-order
 
 ### 0.0.1
 
