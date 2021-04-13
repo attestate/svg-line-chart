@@ -46,7 +46,7 @@ test("if axis label can be set", t => {
 });
 
 test("if polyline includes all data points", t => {
-  const l = polyline([0, 1], [2, 3]);
+  const l = polyline([0, 1], [2, 3], { fill: "none", stroke: "black" });
 
   t.true(l.includes(`points="0,2 1,3"`));
 });
@@ -228,7 +228,7 @@ test("if rendering an axis is possible", t => {
   const y1 = 3;
   const y2 = 4;
 
-  const actual = renderAxis(x1, x2, y1, y2);
+  const actual = renderAxis(x1, x2, y1, y2, { stroke: "black" });
   t.true(
     actual.includes(`<line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>`)
   );

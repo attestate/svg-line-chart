@@ -6,20 +6,84 @@ import {
   isBefore,
   isAfter,
   isSameDay,
-  format
+  format,
+  isEqual
 } from "date-fns";
 import { paramCase } from "param-case";
 
 const html = htm.bind(vhtml);
 
-const defaultOptions = {
-  fill: "none",
-  stroke: "black",
-  strokeWidth: "1"
-};
+const offsetX = 10;
+const offsetY = 5;
 
-export function polyline(x, y, options = defaultOptions) {
-  options = { ...defaultOptions, ...options };
+export function plot(data, options) {
+  const { x, labels } = scaleDates(offsetX, options.width, data.x);
+
+  const { min, max } = getMinMax(data.y, options.margin);
+  const y = scalePoints(offsetY, options.height, min, max, data.y);
+  const yPoints = generateLabelRange(min, max, options.yDistance);
+  const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
+
+  const l = polyline(x, y, options.line);
+
+  return html`
+      <svg viewBox="0 0 ${options.width} ${options.height}">
+        <title>${options.title}</title>
+        ${l}
+        ${renderAxis(
+          offsetX,
+          offsetX,
+          0,
+          options.height - offsetY,
+          options.xAxis
+        )}
+        ${renderAxis(
+          offsetX,
+          options.width,
+          options.height - offsetY,
+          options.height - offsetY,
+          options.yAxis
+        )}
+        ${axisLabel(
+          0,
+          (options.height - offsetY) / 2,
+          "PRICE (EUR)",
+          {
+            style: "transform: rotate(-90deg);",
+            ...options.yLabel
+          },
+          { style: "transform: translate(-15%, 55%)" }
+        )}
+        ${yPoints.map((p, i) => {
+          const scaledPoint = yScaledLabels[i];
+          // NOTE: +0.5 is to center text vertically
+          return axisLabel(offsetX / 1.5, scaledPoint + 0.5, p, options.yLabel);
+        })}
+        ${yScaledLabels.map(p => {
+          return renderAxis(offsetX, options.width, p, p, options.yLabel);
+        })}
+        ${labels.map(({ pos, name }) => {
+          return axisLabel(
+            pos,
+            options.height - offsetY / 2,
+            name,
+            options.xLabel
+          );
+        })}
+        ${labels.map(({ pos }) => {
+          return renderAxis(
+            pos,
+            pos,
+            0,
+            options.height - offsetY,
+            options.xLabel
+          );
+        })}
+      </svg>
+    `;
+}
+
+export function polyline(x, y, options) {
   options = toParamCase(options);
 
   if (x.length !== y.length) {
@@ -92,7 +156,11 @@ export function insertInto(range, candidates) {
     for (let j = 0; j < cCopy.length; j++) {
       const candidate = cCopy[j];
 
-      if (isAfter(date, candidate)) {
+      if (isEqual(date, candidate)) {
+        insertedAt.push(i);
+        cCopy.splice(j, 1);
+        i = 0;
+      } else if (isAfter(date, candidate)) {
         insertedAt.push(i);
         cCopy.splice(j, 1);
         i = 0;
@@ -163,7 +231,6 @@ export function toParamCase(obj) {
 }
 
 export function renderAxis(x1, x2, y1, y2, options) {
-  options = { ...defaultOptions, ...options };
   options = toParamCase(options);
   return html`
     <g ...${options}>
