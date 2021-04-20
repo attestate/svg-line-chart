@@ -2,16 +2,15 @@
   "name": "svg-line-chart",
   "version": "0.0.4",
   "description": "A simple way to generate svg line charts in JS",
-  "source": "src/index.mjs",
-  "main": "dist/line-chart.umd.js",
-  "exports": "./dist/line-chart.umd.js",
-  "module": "dist/line-chart.module.js",
-  "unpkg": "dist/line-chart.umd.js",
+  "main": "dist/svg-line-chart.js",
+  "browser": "dist/browser-svg-line-chart.js",
   "scripts": {
-    "build": "microbundle --target node",
+    "build:node": "esbuild src/index.mjs --outfile=dist/svg-line-chart.js --bundle --platform=node --target=node14.16.1",
+    "build:browser": "esbuild src/index.mjs --outfile=dist/browser-svg-line-chart.js --bundle --minify --sourcemap --target=es6",
+    "build": "npm run build:node && npm run build:browser",
     "test": "ava --verbose",
     "dev": "nodemon scripts/serve.mjs",
-    "git:add": "git update-index --add ./dist/line-chart.js ./dist/line-chart.js.map ./dist/line-chart.modern.js ./dist/line-chart.modern.js.map ./dist/line-chart.module.js ./dist/line-chart.module.js.map ./dist/line-chart.umd.js ./dist/line-chart.umd.js.map"
+    "git:add": "git update-index --add dist/browser-svg-line-chart.js dist/browser-svg-line-chart.js.map dist/svg-line-chart.js"
   },
   "pre-commit": [
     "test",
@@ -29,17 +28,23 @@
   "author": "Tim Daubenschütz <tim@daubenschuetz.de> (https://timdaub.github.io)",
   "license": "GPL-3.0-only",
   "dependencies": {
-    "ava": "3.15.0",
-    "microbundle": "0.13.0",
-    "nodemon": "2.0.7",
-    "pre-commit": "1.2.2"
-  },
-  "peerDependencies": {
     "date-fns": "2.20.0",
-    "param-case": "3.0.4",
-    "vhtml": "2.2.0"
+    "esbuild": "0.11.12",
+    "param-case": "3.0.4"
+  },
+  "bundledDependencies": [
+    "date-fns",
+    "param-case"
+  ],
+  "peerDependencies": {
+    "htm": "^3.0.4",
+    "vhtml": "^2.2.0"
   },
   "devDependencies": {
-    "param-case": "3.0.4"
+    "ava": "3.15.0",
+    "htm": "^3.0.4",
+    "nodemon": "2.0.7",
+    "pre-commit": "1.2.2",
+    "vhtml": "^2.2.0"
   }
 }

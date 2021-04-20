@@ -1,8 +1,11 @@
 // @format
 import test from "ava";
 import { isSameDay } from "date-fns";
+import htm from "htm";
+import vhtml from "vhtml";
 
 import {
+  plot,
   polyline,
   sortRangeAsc,
   countUnique,
@@ -17,6 +20,7 @@ import {
   insertInto
 } from "../src/index.mjs";
 
+const html = htm.bind(vhtml);
 test("if generating a label range works", t => {
   const min = 75.1;
   const max = 184.4;
@@ -38,6 +42,8 @@ test("if axis label can be set", t => {
   const options = {
     camelCase: "to test param-case"
   };
+
+  plot(html);
   const actual = axisLabel(x, y, text, options);
   t.is(
     actual,
@@ -46,16 +52,19 @@ test("if axis label can be set", t => {
 });
 
 test("if polyline includes all data points", t => {
+  plot(html);
   const l = polyline([0, 1], [2, 3], { fill: "none", stroke: "black" });
 
   t.true(l.includes(`points="0,2 1,3"`));
 });
 
 test("if error is thrown when data list has different length", t => {
+  plot(html);
   t.throws(() => polyline([0, 1], [2]));
 });
 
 test("if error is thrown when data lengths are zero", t => {
+  plot(html);
   t.throws(() => polyline([], []));
 });
 
@@ -65,6 +74,7 @@ test("if custom options can be set", t => {
     stroke: "green",
     strokeWidth: "1337"
   };
+  plot(html);
   const l = polyline([0, 1], [2, 3], custom);
 
   t.true(l.includes(`points="0,2 1,3"`));
@@ -228,6 +238,7 @@ test("if rendering an axis is possible", t => {
   const y1 = 3;
   const y2 = 4;
 
+  plot(html);
   const actual = renderAxis(x1, x2, y1, y2, { stroke: "black" });
   t.true(
     actual.includes(`<line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>`)

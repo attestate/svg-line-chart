@@ -1,6 +1,4 @@
 // @format
-import htm from "htm";
-import vhtml from "vhtml";
 import {
   eachMonthOfInterval,
   isAfter,
@@ -10,12 +8,17 @@ import {
 } from "date-fns";
 import { paramCase } from "param-case";
 
-const html = htm.bind(vhtml);
-
 const offsetX = 10;
 const offsetY = 5;
 
-export function plot(data, options) {
+let html;
+
+export function plot(renderer) {
+  html = renderer;
+  return _plot;
+}
+
+function _plot(data, options) {
   const { x, labels } = scaleDates(offsetX, options.width, data.x);
 
   const { min, max } = getMinMax(data.y, options.margin);

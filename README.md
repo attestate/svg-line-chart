@@ -4,13 +4,13 @@
 
 ## Why?
 
-- line-chart.js.br is only 1.8KB
+- line-chart.js.br is only 34KB
   ([d3.min.js](https://cdnjs.cloudflare.com/ajax/libs/d3/6.6.2/d3.min.js) is
   264KB!)
 - Just generates a `<svg>` line chart. NO EXTRA JS OR CSS.
-- Responsive & Configurable
+- Responsiveness through `<svg>` tag
 - Unit tests & Small code base
-- Node.js (almost: & Browsers)
+- Node.js & Browser
 
 ## Screenshot
 
@@ -21,7 +21,7 @@
 Works for browser and node.js.
 
 ```bash
-$ npm i svg-line-chart
+$ npm i svg-line-chart vhtml htm
 ```
 
 ## Usage
@@ -30,10 +30,16 @@ A working example can be found in
 [`./scripts/serve.mjs`](https://github.com/TimDaub/svg-line-chart/blob/master/scripts/serve.mjs).
                                                              
 ```js                                                        
+import htm from "htm";
+import vhtml from "vhtml";
+const html = htm.bind(vhtml);
+
+import { plot } from "svg-line-chart";
+
 const x = ["2021-01-01T00:00:00.000Z","2021-01-02T00:00:00.000Z"];
 const y = [0, 1];
 
-const svgChart = plot(                                       
+const svgChart = plot(html)(
   { x, y },                                                  
   {                                                          
     margin: 10,                                              
