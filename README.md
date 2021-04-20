@@ -76,6 +76,12 @@ const svgChart = plot(html)(
 
 ## Changelog
 
+### 0.1.0
+
+- Release targeted bundles for node14 and browsers (minified)
+- Breaking change: Separate `htm` and `vhtml` as `peerDependencies`
+- Switch from `microbundle` to `esbuild`
+
 ### 0.0.4
 
 - Target node again
