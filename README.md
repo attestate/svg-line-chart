@@ -4,7 +4,7 @@
 
 ## Why?
 
-- line-chart.js.br is only 34KB
+- browser-svg-line-chart.js is 34KB
   ([d3.min.js](https://cdnjs.cloudflare.com/ajax/libs/d3/6.6.2/d3.min.js) is
   264KB!)
 - Just generates a `<svg>` line chart. NO EXTRA JS OR CSS.
