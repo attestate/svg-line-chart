@@ -17,26 +17,10 @@ import {
   axisLabel,
   getMinMax,
   generateLabelRange,
-  insertInto,
-  countDistances
+  insertInto
 } from "../src/index.mjs";
 
 const html = htm.bind(vhtml);
-
-test("if count distances throws when range is not in ascending order", t => {
-  const range = [new Date(), sub(new Date(), { days: 1 })];
-  t.throws(() => countDistances(range, differenceInDays));
-});
-
-test("if count distances calculates correct", t => {
-  const distances = [4, 3, 2, 1];
-  const cummulativeDist = 3;
-  const range = distances.map(d => sub(new Date(), { days: d }));
-  t.is(range.length, distances.length);
-
-  const result = countDistances(range, differenceInDays);
-  t.is(result, cummulativeDist);
-});
 
 test("if generating a label range works", t => {
   const min = 75.1;
@@ -112,15 +96,16 @@ test("if range can be sorted ascending", t => {
   const actual = sortRangeAsc(range);
   t.deepEqual(expected, actual);
 });
+
 test("if point width is calculated correctly", t => {
   const range = [
-    new Date("2021-01-01T00:00:00.000Z"),
+    new Date("2021-01-01T00:00:00.000Z"), // d to prev: 0
     new Date("2021-01-01T00:00:00.000Z"), //distance to prev: 0
     new Date("2021-01-02T00:00:00.000Z"), //d to prev: 1
     new Date("2021-01-02T00:00:00.000Z") //d to prev: 0
   ];
   const total = 1;
-  const width = pointWidth(total, range, isSameDay, differenceInDays);
+  const width = pointWidth(total, range, differenceInDays);
 
   t.is(width, 1);
 });
@@ -163,7 +148,7 @@ test("if labels are shown at right position", t => {
   const [l1, l2, l3] = labels;
   t.true(l1.pos < l2.pos < l3.pos);
   t.true(l1.pos >= 0);
-  t.true(l3.pos < total);
+  t.true(l3.pos <= total);
 });
 
 test("if scaling a simple set of points works", t => {

@@ -121,26 +121,9 @@ export function sortRangeAsc(range) {
   return range.sort((a, b) => a - b);
 }
 
-export function pointWidth(total, range, equalityOp, rangeMeasurement) {
-  const count = countDistances(range, rangeMeasurement);
-  return total / count;
-}
-
-export function countDistances(range, rangeMeasurement) {
-  let total = 0;
-  for (let [i, curr] of range.entries()) {
-    if (i !== 0) {
-      const prev = range[i - 1];
-      const dist = rangeMeasurement(curr, prev);
-
-      if (dist < 0) {
-        throw new Error(`range argument needs to have an ASCENDING order`);
-      }
-
-      total += dist;
-    }
-  }
-  return total;
+export function pointWidth(totalSpace, range, rangeMeasurement) {
+  const count = rangeMeasurement(range[range.length - 1], range[0]);
+  return totalSpace / count;
 }
 
 export function insertInto(range, candidates) {
@@ -182,11 +165,12 @@ export function scaleDates(
 ) {
   range = sortRangeAsc(range);
 
-  const pWidth = pointWidth(to - from, range, equalityOp, rangeMeasurement);
+  const pWidth = pointWidth(to - from, range, rangeMeasurement);
   const start = range[0];
   const x = range.map(d => {
     const distanceFromStart = differenceInDays(d, start);
-    return from + distanceFromStart * pWidth;
+    const pos = from + distanceFromStart * pWidth;
+    return pos;
   });
 
   const months = eachMonthOfInterval({
