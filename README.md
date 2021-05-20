@@ -76,6 +76,13 @@ const svgChart = plot(html)(
 
 ## Changelog
 
+### 0.1.1
+
+- `scaleDates` function assumed a uniformly distributed range of date data
+  points which lead to temporal distortion of the graph. Distance between data
+  points is now calculated precisely with a data-specific range measurement
+  function (e.g. `differenceInDays` from date-fns).
+
 ### 0.1.0
 
 - Release targeted bundles for node14 and browsers (minified)
