@@ -76,6 +76,12 @@ const svgChart = plot(html)(
 
 ## Changelog
 
+### 0.1.2
+
+- `scaleDates` function didn't consider svg width and rendered beyond right
+  border. It was adjusted to consider the width of the svg and scale the input
+  data points accordingly.
+
 ### 0.1.1
 
 - `scaleDates` function assumed a uniformly distributed range of date data
