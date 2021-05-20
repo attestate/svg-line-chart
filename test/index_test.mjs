@@ -3,12 +3,12 @@ import test from "ava";
 import { isSameDay } from "date-fns";
 import htm from "htm";
 import vhtml from "vhtml";
+import { sub, differenceInDays } from "date-fns";
 
 import {
   plot,
   polyline,
   sortRangeAsc,
-  countUnique,
   pointWidth,
   scaleDates,
   scalePoints,
@@ -17,10 +17,27 @@ import {
   axisLabel,
   getMinMax,
   generateLabelRange,
-  insertInto
+  insertInto,
+  countDistances
 } from "../src/index.mjs";
 
 const html = htm.bind(vhtml);
+
+test("if count distances throws when range is not in ascending order", t => {
+  const range = [new Date(), sub(new Date(), { days: 1 })];
+  t.throws(() => countDistances(range, differenceInDays));
+});
+
+test("if count distances calculates correct", t => {
+  const distances = [4, 3, 2, 1];
+  const cummulativeDist = 3;
+  const range = distances.map(d => sub(new Date(), { days: d }));
+  t.is(range.length, distances.length);
+
+  const result = countDistances(range, differenceInDays);
+  t.is(result, cummulativeDist);
+});
+
 test("if generating a label range works", t => {
   const min = 75.1;
   const max = 184.4;
@@ -95,78 +112,40 @@ test("if range can be sorted ascending", t => {
   const actual = sortRangeAsc(range);
   t.deepEqual(expected, actual);
 });
-
-test("if range can be counted but only counting unique dates based on custom equality operator", t => {
-  const range1 = [
-    new Date("2021-01-02T00:00:00.000Z"),
-    new Date("2021-01-01T00:00:00.000Z")
-  ];
-  const c1 = countUnique(range1, isSameDay);
-  t.is(c1, 2);
-
-  const range3 = [];
-  const c3 = countUnique(range3, isSameDay);
-  t.is(c3, 0);
-
-  const range4 = [new Date("2021-01-02T00:00:00.000Z")];
-  const c4 = countUnique(range4, isSameDay);
-  t.is(c4, 1);
-
-  const range5 = [
-    new Date("2021-01-01T00:00:00.000Z"),
-    new Date("2021-01-01T12:23:00.000Z")
-  ];
-  const c5 = countUnique(range5, isSameDay);
-  t.is(c5, 1);
-
-  const range6 = [
-    new Date("2021-01-01T00:00:00.000Z"),
-    new Date("2021-01-01T12:23:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z")
-  ];
-  const c6 = countUnique(range6, isSameDay);
-  t.is(c6, 2);
-
-  const range7 = [
-    new Date("2021-01-01T00:00:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z"),
-    new Date("2021-01-01T00:00:00.000Z")
-  ];
-  const c7 = countUnique(range7, isSameDay);
-  t.is(c7, 2);
-});
-
 test("if point width is calculated correctly", t => {
   const range = [
     new Date("2021-01-01T00:00:00.000Z"),
-    new Date("2021-01-01T00:00:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z")
+    new Date("2021-01-01T00:00:00.000Z"), //distance to prev: 0
+    new Date("2021-01-02T00:00:00.000Z"), //d to prev: 1
+    new Date("2021-01-02T00:00:00.000Z") //d to prev: 0
   ];
-  const total = 2;
-  const width = pointWidth(total, range, isSameDay);
+  const total = 1;
+  const width = pointWidth(total, range, isSameDay, differenceInDays);
+
   t.is(width, 1);
 });
 
 test("if range to points works", t => {
   const range = [
-    new Date("2021-01-01T00:00:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z"),
-    new Date("2021-01-02T00:00:00.000Z"),
-    new Date("2021-01-03T00:00:00.000Z")
+    new Date("2021-01-01T00:00:00.000Z"), // distance to prev: 0
+    new Date("2021-01-02T00:00:00.000Z"), // d to prev: 1
+    new Date("2021-01-02T00:00:00.000Z"), // d to prev: 0
+    new Date("2021-01-03T00:00:00.000Z") // d to prev: 1
   ];
 
-  const total = 3;
+  const total = 2;
 
   const { x } = scaleDates(0, total, range, isSameDay);
-  const [p1, p2, p3] = x;
+  t.is(range.length, x.length);
+  const [p1, p2, p3, p4] = x;
   t.is(p1, 0);
   t.is(p2, 1);
-  t.is(p3, 2);
+  t.is(p3, 1);
+  t.is(p4, 2);
 });
 
 test("if labels are shown at right position", t => {
+  // NOTE: Dates differ by month AND NOT BY DAY
   const range = [
     new Date("2021-01-01T00:00:00.000Z"),
     new Date("2021-02-01T00:00:00.000Z"),
@@ -178,13 +157,13 @@ test("if labels are shown at right position", t => {
   const { x, labels } = scaleDates(0, total, range, isSameDay);
   const [p1, p2, p3] = x;
   t.is(p1, 0);
-  t.is(p2, 1);
-  t.is(p3, 2);
+  t.true(p2 > p1 && p2 < p3);
+  t.is(p3, total);
 
   const [l1, l2, l3] = labels;
-  t.is(l1.pos, 0);
-  t.is(l2.pos, 1);
-  t.is(l3.pos, 2);
+  t.true(l1.pos < l2.pos < l3.pos);
+  t.true(l1.pos >= 0);
+  t.true(l3.pos < total);
 });
 
 test("if scaling a simple set of points works", t => {

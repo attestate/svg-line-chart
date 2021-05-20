@@ -4,7 +4,8 @@ import {
   isAfter,
   isSameDay,
   format,
-  isEqual
+  isEqual,
+  differenceInDays
 } from "date-fns";
 import { paramCase } from "param-case";
 
@@ -120,36 +121,26 @@ export function sortRangeAsc(range) {
   return range.sort((a, b) => a - b);
 }
 
-export function countUnique(range, equalityOp) {
-  if (range.length < 2) {
-    return range.length;
-  }
-  let buckets = [[range[0]]];
-
-  // NOTE: We start at `1` as we've already put element `0` in the first
-  // bucket.
-  for (let i = 1; i < range.length; i++) {
-    const date = range[i];
-    let match;
-
-    for (let bucket of buckets) {
-      if (equalityOp(date, bucket[0])) {
-        match = bucket;
-      }
-    }
-    if (match) {
-      match.push(date);
-    } else {
-      buckets.push([date]);
-    }
-  }
-  return buckets.length;
+export function pointWidth(total, range, equalityOp, rangeMeasurement) {
+  const count = countDistances(range, rangeMeasurement);
+  return total / count;
 }
 
-// NOTE: Expects sorted `range` (ASC).
-export function pointWidth(total, range, equalityOp) {
-  const count = countUnique(range, equalityOp);
-  return total / count;
+export function countDistances(range, rangeMeasurement) {
+  let total = 0;
+  for (let [i, curr] of range.entries()) {
+    if (i !== 0) {
+      const prev = range[i - 1];
+      const dist = rangeMeasurement(curr, prev);
+
+      if (dist < 0) {
+        throw new Error(`range argument needs to have an ASCENDING order`);
+      }
+
+      total += dist;
+    }
+  }
+  return total;
 }
 
 export function insertInto(range, candidates) {
@@ -182,22 +173,33 @@ export function insertInto(range, candidates) {
   return insertedAt;
 }
 
-export function scaleDates(from, to, range, equalityOp = isSameDay) {
+export function scaleDates(
+  from,
+  to,
+  range,
+  equalityOp = isSameDay,
+  rangeMeasurement = differenceInDays
+) {
   range = sortRangeAsc(range);
 
-  const pWidth = pointWidth(to - from, range, equalityOp);
-  const x = range.map((d, i) => from + i * pWidth);
+  const pWidth = pointWidth(to - from, range, equalityOp, rangeMeasurement);
+  const start = range[0];
+  const x = range.map(d => {
+    const distanceFromStart = differenceInDays(d, start);
+    return from + distanceFromStart * pWidth;
+  });
 
   const months = eachMonthOfInterval({
     start: range[0],
     end: range[range.length - 1]
   });
-  const insertedAt = insertInto(range, months);
-  const names = months.map(d => format(d, "MMM yyyy"));
-  const labels = insertedAt.map((i, j) => ({
-    pos: from + i * pWidth,
-    name: names[j]
-  }));
+  const labels = months.map(firstDayOfMonth => {
+    const distanceFromStart = differenceInDays(firstDayOfMonth, start);
+    return {
+      pos: from + distanceFromStart * pWidth,
+      name: format(firstDayOfMonth, "MMM yyyy")
+    };
+  });
 
   return { x, labels };
 }
