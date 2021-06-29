@@ -74,7 +74,20 @@ const svgChart = plot(html)(
 );
 ```
 
+### Notes
+
+- `plot` will try to automatically scale the y labels based on how many labels
+  you prefer using `yNumLabels`. Please note that the algorithm behind
+  `yNumLabels` is based on a best-effort strategy. There won't be a guarantee
+  that it'll return the number specified.
+
 ## Changelog
+
+### 0.2.0
+
+- Breaking change: Remove `yDistance` option
+- Breaking change: Introduce `yNumLabels` option. Internally, add
+  function to scale y label values to the power of ten.
 
 ### 0.1.2
 

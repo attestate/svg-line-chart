@@ -1,6 +1,6 @@
 {
   "name": "svg-line-chart",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A simple way to generate svg line charts in JS",
   "main": "dist/svg-line-chart.js",
   "browser": "dist/browser-svg-line-chart.js",
