@@ -11296,35 +11296,35 @@ function _plot(data, options) {
   const {x, labels} = scaleDates(offsetX, options.width, data.x);
   const {min, max} = getMinMax(data.y, options.margin);
   const y = scalePoints(offsetY, options.height, min, max, data.y);
-  const yPoints = generateLabelRange(min, max, options.yDistance);
+  const yPoints = generateLabelRange(min, max, options.yNumLabels);
   const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
   const l = polyline(x, y, options.line);
   return html`
-      <svg viewBox="0 0 ${options.width} ${options.height}">
-        <title>${options.title}</title>
-        ${renderAxis(offsetX, offsetX, 0, options.height - offsetY, options.xAxis)}
-        ${renderAxis(offsetX, options.width, options.height - offsetY, options.height - offsetY, options.yAxis)}
-        ${axisLabel(0, (options.height - offsetY) / 2, options.yLabel.name, __objSpread({
+    <svg viewBox="0 0 ${options.width} ${options.height}">
+      <title>${options.title}</title>
+      ${renderAxis(offsetX, offsetX, 0, options.height - offsetY, options.xAxis)}
+      ${renderAxis(offsetX, options.width, options.height - offsetY, options.height - offsetY, options.yAxis)}
+      ${axisLabel(0, (options.height - offsetY) / 2, options.yLabel.name, __objSpread({
     style: "transform: rotate(-90deg);"
   }, options.yLabel), {style: "transform: translate(-15%, 55%)"})}
-        ${yPoints.map((p, i) => {
+      ${yPoints.map((p, i) => {
     const scaledPoint = yScaledLabels[i];
-    return axisLabel(offsetX / 1.5, scaledPoint + 0.5, p, options.yLabel);
+    return axisLabel(offsetX / 2, scaledPoint + 0.5, p, options.yLabel);
   })}
-        ${yScaledLabels.map((p) => {
+      ${yScaledLabels.map((p) => {
     return renderAxis(offsetX, options.width, p, p, options.yLabel);
   })}
-        ${labels.map(({pos, name}) => {
+      ${labels.map(({pos, name}) => {
     return axisLabel(pos, options.height - offsetY / 2, name, options.xLabel);
   })}
-        ${labels.map(({pos}, i) => {
+      ${labels.map(({pos}, i) => {
     if (i === 0)
       return;
     return renderAxis(pos, pos, 0, options.height - offsetY, options.xLabel);
   })}
-        ${l}
-      </svg>
-    `;
+      ${l}
+    </svg>
+  `;
 }
 function polyline(x, y, options) {
   options = toParamCase(options);
@@ -11340,7 +11340,7 @@ function polyline(x, y, options) {
   }
   points = points.slice(0, -1);
   return html`
-    <polyline ...${options} points=${points}/>
+    <polyline ...${options} points=${points} />
   `;
 }
 function sortRangeAsc(range) {
@@ -11399,7 +11399,10 @@ function scaleDates(from, to, range, equalityOp = import_date_fns.isSameDay, ran
 }
 function getMinMax(range, margin = 0) {
   const max = Math.max.apply(Math, range) + margin;
-  const min = Math.min.apply(Math, range) - margin;
+  let min = Math.min.apply(Math, range) - margin;
+  if (min < 0) {
+    min = 0;
+  }
   return {
     min,
     max
@@ -11434,11 +11437,26 @@ function axisLabel(x, y, text, options, containerOptions) {
     </g>
   `;
 }
-function generateLabelRange(min, max, distance) {
+function generateLabelRange(min, max, numLabels) {
+  const space = max - min;
+  const step = space / numLabels;
+  const powerStep = Math.pow(10, Math.floor(Math.log10(step)));
+  let diff;
+  if (step > powerStep) {
+    diff = Math.round(step / powerStep);
+  } else {
+    diff = Math.round(powerStep / step);
+  }
   const labels = [];
-  const start = Math.floor(min);
-  for (let i = start; i <= max; i++) {
-    if (i % distance === 0) {
+  const pow10Start = Math.floor(Math.log10(min));
+  let start;
+  if (pow10Start <= 2) {
+    start = 0;
+  } else {
+    start = Math.pow(10, pow10Start);
+  }
+  for (let i = start; i <= max; i += powerStep * diff) {
+    if (i > min && i < max) {
       labels.push(i);
     }
   }

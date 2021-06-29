@@ -24,69 +24,69 @@ function _plot(data, options) {
 
   const { min, max } = getMinMax(data.y, options.margin);
   const y = scalePoints(offsetY, options.height, min, max, data.y);
-  const yPoints = generateLabelRange(min, max, options.yDistance);
+  const yPoints = generateLabelRange(min, max, options.yNumLabels);
   const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
 
   const l = polyline(x, y, options.line);
 
   return html`
-      <svg viewBox="0 0 ${options.width} ${options.height}">
-        <title>${options.title}</title>
-        ${renderAxis(
-          offsetX,
-          offsetX,
+    <svg viewBox="0 0 ${options.width} ${options.height}">
+      <title>${options.title}</title>
+      ${renderAxis(
+        offsetX,
+        offsetX,
+        0,
+        options.height - offsetY,
+        options.xAxis
+      )}
+      ${renderAxis(
+        offsetX,
+        options.width,
+        options.height - offsetY,
+        options.height - offsetY,
+        options.yAxis
+      )}
+      ${axisLabel(
+        0,
+        (options.height - offsetY) / 2,
+        options.yLabel.name,
+        {
+          style: "transform: rotate(-90deg);",
+          ...options.yLabel
+        },
+        { style: "transform: translate(-15%, 55%)" }
+      )}
+      ${yPoints.map((p, i) => {
+        const scaledPoint = yScaledLabels[i];
+        // NOTE: +0.5 is to center text vertically
+        return axisLabel(offsetX / 2, scaledPoint + 0.5, p, options.yLabel);
+      })}
+      ${yScaledLabels.map(p => {
+        return renderAxis(offsetX, options.width, p, p, options.yLabel);
+      })}
+      ${labels.map(({ pos, name }) => {
+        return axisLabel(
+          pos,
+          options.height - offsetY / 2,
+          name,
+          options.xLabel
+        );
+      })}
+      ${labels.map(({ pos }, i) => {
+        // NOTE: We don't want to draw over the y axis, hence for the first
+        // element we don't draw.
+        if (i === 0) return;
+        return renderAxis(
+          pos,
+          pos,
           0,
           options.height - offsetY,
-          options.xAxis
-        )}
-        ${renderAxis(
-          offsetX,
-          options.width,
-          options.height - offsetY,
-          options.height - offsetY,
-          options.yAxis
-        )}
-        ${axisLabel(
-          0,
-          (options.height - offsetY) / 2,
-          options.yLabel.name,
-          {
-            style: "transform: rotate(-90deg);",
-            ...options.yLabel
-          },
-          { style: "transform: translate(-15%, 55%)" }
-        )}
-        ${yPoints.map((p, i) => {
-          const scaledPoint = yScaledLabels[i];
-          // NOTE: +0.5 is to center text vertically
-          return axisLabel(offsetX / 1.5, scaledPoint + 0.5, p, options.yLabel);
-        })}
-        ${yScaledLabels.map(p => {
-          return renderAxis(offsetX, options.width, p, p, options.yLabel);
-        })}
-        ${labels.map(({ pos, name }) => {
-          return axisLabel(
-            pos,
-            options.height - offsetY / 2,
-            name,
-            options.xLabel
-          );
-        })}
-        ${labels.map(({ pos }, i) => {
-          // NOTE: We don't want to draw over the y axis, hence for the first
-          // element we don't draw.
-          if (i === 0) return;
-          return renderAxis(
-            pos,
-            pos,
-            0,
-            options.height - offsetY,
-            options.xLabel
-          );
-        })}
-        ${l}
-      </svg>
-    `;
+          options.xLabel
+        );
+      })}
+      ${l}
+    </svg>
+  `;
 }
 
 export function polyline(x, y, options) {
@@ -94,9 +94,7 @@ export function polyline(x, y, options) {
 
   if (x.length !== y.length) {
     throw new Error(
-      `x and y parameters need to be of same length. They are not: x (${
-        x.length
-      }) and y (${y.length}).`
+      `x and y parameters need to be of same length. They are not: x (${x.length}) and y (${y.length}).`
     );
   }
 
@@ -113,7 +111,7 @@ export function polyline(x, y, options) {
   points = points.slice(0, -1);
 
   return html`
-    <polyline ...${options} points=${points}/>
+    <polyline ...${options} points=${points} />
   `;
 }
 
@@ -190,7 +188,14 @@ export function scaleDates(
 
 export function getMinMax(range, margin = 0) {
   const max = Math.max.apply(Math, range) + margin;
-  const min = Math.min.apply(Math, range) - margin;
+  let min = Math.min.apply(Math, range) - margin;
+
+  // NOTE: We've observed cases where `min` reached a point beyond
+  // zero and hence broke the assumptions the library was built upon. We hence
+  // set min manually to zero if it goes negative.
+  if (min < 0) {
+    min = 0;
+  }
 
   return {
     min,
@@ -239,11 +244,28 @@ export function axisLabel(x, y, text, options, containerOptions) {
   `;
 }
 
-export function generateLabelRange(min, max, distance) {
+export function generateLabelRange(min, max, numLabels) {
+  const space = max - min;
+  const step = space / numLabels;
+  const powerStep = Math.pow(10, Math.floor(Math.log10(step)));
+
+  let diff;
+  if (step > powerStep) {
+    diff = Math.round(step / powerStep);
+  } else {
+    diff = Math.round(powerStep / step);
+  }
+
   const labels = [];
-  const start = Math.floor(min);
-  for (let i = start; i <= max; i++) {
-    if (i % distance === 0) {
+  const pow10Start = Math.floor(Math.log10(min));
+  let start;
+  if (pow10Start <= 2) {
+    start = 0;
+  } else {
+    start = Math.pow(10, pow10Start);
+  }
+  for (let i = start; i <= max; i += powerStep*diff) {
+    if (i > min && i < max) {
       labels.push(i);
     }
   }

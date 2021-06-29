@@ -25,14 +25,16 @@ const html = htm.bind(vhtml);
 test("if generating a label range works", t => {
   const min = 75.1;
   const max = 184.4;
-  const distance = 50;
-  const range = generateLabelRange(min, max, distance);
-  t.deepEqual(range, [100, 150]);
+  const numLabels = 5;
+  const range = generateLabelRange(min, max, numLabels);
+  t.true(range.length >= numLabels -1 );
+  t.true(range.length >= numLabels + 1);
+  t.deepEqual(range, [80, 100, 120, 140, 160, 180]);
 });
 
 test("if getting minimum and maximum from a range works", t => {
   const { min, max } = getMinMax([-1, 0, -2, 5, 6, 10000, 2, -1100]);
-  t.is(min, -1100);
+  t.is(min, 0);
   t.is(max, 10000);
 });
 

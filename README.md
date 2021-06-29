@@ -69,7 +69,7 @@ const svgChart = plot(html)(
       stroke: "lightgrey",                                   
       fontSize: 1.5                                          
     },                                                       
-    yDistance: 50
+    yNumLabels: 10
   }
 );
 ```
