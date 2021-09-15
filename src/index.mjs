@@ -28,9 +28,18 @@ function _plot(data, options) {
   const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
 
   const l = polyline(x, y, options.line);
+  const gradient = polygon(x, y, options.pgon)
 
   return html`
     <svg viewBox="0 0 ${options.width} ${options.height}">
+
+      <defs>
+        <linearGradient id="polygrad" >
+          <stop offset=${options.polyGrad.offSet1} stop-color=${options.polyGrad.stopColor1} />
+          <stop offset=${options.polyGrad.offSet2} stop-color=${options.polyGrad.stopColor2} />
+        </linearGradient>
+      </defs>
+
       <title>${options.title}</title>
       ${renderAxis(
         offsetX,
@@ -85,6 +94,7 @@ function _plot(data, options) {
         );
       })}
       ${l}
+      ${gradient}
     </svg>
   `;
 }
@@ -114,6 +124,37 @@ export function polyline(x, y, options) {
     <polyline ...${options} points=${points} />
   `;
 }
+
+
+export function polygon(x, y, options) {
+  options = toParamCase(options);
+
+  if (x.length !== y.length) {
+    throw new Error(
+      `x and y parameters need to be of same length. They are not: x (${x.length}) and y (${y.length}).`
+    );
+  }
+
+  if (x.length === 0) {
+    throw new Error("Length of data x and y cannot be zero");
+  }
+
+  let gradient_points = "";
+  let len = x.length;
+  let bottom = 30;    //4.91;
+
+  gradient_points += `${x[0]},${bottom} `;
+  for (let i = 0; i < x.length; i++) {
+    gradient_points += `${x[i]},${y[i]} `;
+  }
+  gradient_points += `${x[len-1]},${bottom} `;
+
+  return html`
+    <polygon ...${options} points=${gradient_points} />
+
+  `;
+}
+
 
 export function sortRangeAsc(range) {
   return range.sort((a, b) => a - b);

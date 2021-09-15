@@ -32,10 +32,23 @@ http
         width: 70,
         height: 35,
         title: "A line chart",
+        pgon: {
+          fill: "none",
+          style: "fill:url(#polygrad);",
+          strokeWidth: 0.01,
+          stroke: "white"
+
+        },
         line: {
           fill: "none",
           strokeWidth: 0.1,
           stroke: "black"
+        },
+        polyGrad: {
+          offSet1: "0%",
+          stopColor1: "blue",
+          offSet2: "100%",
+          stopColor2: "orange"
         },
         xAxis: {
           strokeWidth: 0.1,
