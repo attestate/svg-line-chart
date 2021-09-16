@@ -28,15 +28,15 @@ function _plot(data, options) {
   const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
 
   const l = polyline(x, y, options.line);
-  const gradient = polygon(x, y, options.pgon)
+  const gradient = polygon(x, y, options.polygon)
 
   return html`
     <svg viewBox="0 0 ${options.width} ${options.height}">
 
       <defs>
         <linearGradient id="polygrad" >
-          <stop offset=${options.polyGrad.offSet1} stop-color=${options.polyGrad.stopColor1} />
-          <stop offset=${options.polyGrad.offSet2} stop-color=${options.polyGrad.stopColor2} />
+          <stop offset=${options.polygonGradient.offSet1} stop-color=${options.polygonGradient.stopColor1} />
+          <stop offset=${options.polygonGradient.offSet2} stop-color=${options.polygonGradient.stopColor2} />
         </linearGradient>
       </defs>
 

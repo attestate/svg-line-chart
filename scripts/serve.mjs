@@ -32,7 +32,7 @@ http
         width: 70,
         height: 35,
         title: "A line chart",
-        pgon: {
+        polygon: {
           fill: "none",
           style: "fill:url(#polygrad);",
           strokeWidth: 0.01,
@@ -44,7 +44,7 @@ http
           strokeWidth: 0.1,
           stroke: "black"
         },
-        polyGrad: {
+        polygonGradient: {
           offSet1: "0%",
           stopColor1: "blue",
           offSet2: "100%",
