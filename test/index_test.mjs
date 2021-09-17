@@ -28,7 +28,7 @@ test("if generating a label range works", t => {
   const max = 184.4;
   const numLabels = 5;
   const range = generateLabelRange(min, max, numLabels);
-  t.true(range.length >= numLabels -1 );
+  t.true(range.length >= numLabels - 1);
   t.true(range.length >= numLabels + 1);
   t.deepEqual(range, [80, 100, 120, 140, 160, 180]);
 });
@@ -87,31 +87,32 @@ test("if custom options can be set", t => {
   t.true(l.includes(`stroke-width="${custom.strokeWidth}"`));
 });
 
-
 test("if custom options can be set with linear gradient polygon", t => {
-  const custom = {
-    fill: "none",
-    stroke: "green",
-    strokeWidth: "1337",
-    style: {
-      offSet1: "0%",
-      stopColor1: "blue",
-      offSet2: "100%",
-      stopColor2: "orange"
+  const options = {
+    height: 35,
+    polygon: {
+      fill: "none",
+      stroke: "green",
+      strokeWidth: "1337",
+      style: {
+        offSet1: "0%",
+        stopColor1: "blue",
+        offSet2: "100%",
+        stopColor2: "orange"
+      }
     }
   };
   plot(html);
   let bottom = 30;
-  const gradient = polygon([1, 2], [3, 4], custom);
+  const gradient = polygon([1, 2], [3, 4], options);
 
+  console.log(gradient);
   t.true(gradient.includes(`points="1,30 1,3 2,4 2,30 "`));
-  t.true(gradient.includes(`fill="${custom.fill}"`));
-  t.true(gradient.includes(`stroke="${custom.stroke}"`));
-  t.true(gradient.includes(`stroke-width="${custom.strokeWidth}"`));
-  t.true(gradient.includes(`style="${custom.style}"`));
-
+  t.true(gradient.includes(`fill="${options.polygon.fill}"`));
+  t.true(gradient.includes(`stroke="${options.polygon.stroke}"`));
+  t.true(gradient.includes(`stroke-width="${options.polygon.strokeWidth}"`));
+  t.true(gradient.includes(`style="${options.polygon.style}"`));
 });
-
 
 test("if range can be sorted ascending", t => {
   const range = [

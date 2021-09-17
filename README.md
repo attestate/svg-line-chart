@@ -46,6 +46,18 @@ const svgChart = plot(html)(
     width: 70,                                               
     height: 35,                                              
     title: "A line chart",                                   
+    polygon: {
+      fill: "none",
+      style: "fill:url(#polygrad);",
+      strokeWidth: 0.01,
+      stroke: "white"
+    },
+    polygonGradient: {
+      offSet1: "0%",
+      stopColor1: "blue",
+      offSet2: "100%",
+      stopColor2: "orange"
+    },
     line: {                                                  
       fill: "none",                                          
       strokeWidth: 0.1,                                      

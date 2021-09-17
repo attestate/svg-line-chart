@@ -28,15 +28,20 @@ function _plot(data, options) {
   const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
 
   const l = polyline(x, y, options.line);
-  const gradient = polygon(x, y, options.polygon)
+  const gradient = polygon(x, y, options);
 
   return html`
     <svg viewBox="0 0 ${options.width} ${options.height}">
-
       <defs>
-        <linearGradient id="polygrad" >
-          <stop offset=${options.polygonGradient.offSet1} stop-color=${options.polygonGradient.stopColor1} />
-          <stop offset=${options.polygonGradient.offSet2} stop-color=${options.polygonGradient.stopColor2} />
+        <linearGradient id="polygrad">
+          <stop
+            offset=${options.polygonGradient.offSet1}
+            stop-color=${options.polygonGradient.stopColor1}
+          />
+          <stop
+            offset=${options.polygonGradient.offSet2}
+            stop-color=${options.polygonGradient.stopColor2}
+          />
         </linearGradient>
       </defs>
 
@@ -93,8 +98,7 @@ function _plot(data, options) {
           options.xLabel
         );
       })}
-      ${l}
-      ${gradient}
+      ${l} ${gradient}
     </svg>
   `;
 }
@@ -125,9 +129,8 @@ export function polyline(x, y, options) {
   `;
 }
 
-
 export function polygon(x, y, options) {
-  options = toParamCase(options);
+  const polygonOptions = toParamCase(options.polygon);
 
   if (x.length !== y.length) {
     throw new Error(
@@ -139,22 +142,18 @@ export function polygon(x, y, options) {
     throw new Error("Length of data x and y cannot be zero");
   }
 
-  let gradient_points = "";
-  let len = x.length;
-  let bottom = 30;    //4.91;
+  let gradientPoints = "";
 
-  gradient_points += `${x[0]},${bottom} `;
+  gradientPoints += `${x[0]},${options.height - offsetY} `;
   for (let i = 0; i < x.length; i++) {
-    gradient_points += `${x[i]},${y[i]} `;
+    gradientPoints += `${x[i]},${y[i]} `;
   }
-  gradient_points += `${x[len-1]},${bottom} `;
+  gradientPoints += `${x[x.length - 1]},${options.height - offsetY} `;
 
   return html`
-    <polygon ...${options} points=${gradient_points} />
-
+    <polygon ...${polygonOptions} points=${gradientPoints} />
   `;
 }
-
 
 export function sortRangeAsc(range) {
   return range.sort((a, b) => a - b);
@@ -305,7 +304,7 @@ export function generateLabelRange(min, max, numLabels) {
   } else {
     start = Math.pow(10, pow10Start);
   }
-  for (let i = start; i <= max; i += powerStep*diff) {
+  for (let i = start; i <= max; i += powerStep * diff) {
     if (i > min && i < max) {
       labels.push(i);
     }

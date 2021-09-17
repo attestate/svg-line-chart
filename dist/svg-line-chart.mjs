@@ -11280,8 +11280,22 @@ function _plot(data, options) {
   const yPoints = generateLabelRange(min, max, options.yNumLabels);
   const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
   const l = polyline(x, y, options.line);
+  const gradient = polygon(x, y, options);
   return html`
     <svg viewBox="0 0 ${options.width} ${options.height}">
+      <defs>
+        <linearGradient id="polygrad">
+          <stop
+            offset=${options.polygonGradient.offSet1}
+            stop-color=${options.polygonGradient.stopColor1}
+          />
+          <stop
+            offset=${options.polygonGradient.offSet2}
+            stop-color=${options.polygonGradient.stopColor2}
+          />
+        </linearGradient>
+      </defs>
+
       <title>${options.title}</title>
       ${renderAxis(offsetX, offsetX, 0, options.height - offsetY, options.xAxis)}
       ${renderAxis(offsetX, options.width, options.height - offsetY, options.height - offsetY, options.yAxis)}
@@ -11303,7 +11317,7 @@ function _plot(data, options) {
       return;
     return renderAxis(pos, pos, 0, options.height - offsetY, options.xLabel);
   })}
-      ${l}
+      ${l} ${gradient}
     </svg>
   `;
 }
@@ -11322,6 +11336,24 @@ function polyline(x, y, options) {
   points = points.slice(0, -1);
   return html`
     <polyline ...${options} points=${points} />
+  `;
+}
+function polygon(x, y, options) {
+  const polygonOptions = toParamCase(options.polygon);
+  if (x.length !== y.length) {
+    throw new Error(`x and y parameters need to be of same length. They are not: x (${x.length}) and y (${y.length}).`);
+  }
+  if (x.length === 0) {
+    throw new Error("Length of data x and y cannot be zero");
+  }
+  let gradientPoints = "";
+  gradientPoints += `${x[0]},${options.height - offsetY} `;
+  for (let i = 0; i < x.length; i++) {
+    gradientPoints += `${x[i]},${y[i]} `;
+  }
+  gradientPoints += `${x[x.length - 1]},${options.height - offsetY} `;
+  return html`
+    <polygon ...${polygonOptions} points=${gradientPoints} />
   `;
 }
 function sortRangeAsc(range) {
@@ -11450,6 +11482,7 @@ export {
   insertInto,
   plot,
   pointWidth,
+  polygon,
   polyline,
   renderAxis,
   scaleDates,
