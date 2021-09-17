@@ -8,6 +8,7 @@ import { sub, differenceInDays } from "date-fns";
 import {
   plot,
   polyline,
+  polygon,
   sortRangeAsc,
   pointWidth,
   scaleDates,
@@ -85,6 +86,32 @@ test("if custom options can be set", t => {
   t.true(l.includes(`stroke="${custom.stroke}"`));
   t.true(l.includes(`stroke-width="${custom.strokeWidth}"`));
 });
+
+
+test("if custom options can be set with linear gradient polygon", t => {
+  const custom = {
+    fill: "none",
+    stroke: "green",
+    strokeWidth: "1337",
+    style: {
+      offSet1: "0%",
+      stopColor1: "blue",
+      offSet2: "100%",
+      stopColor2: "orange"
+    }
+  };
+  plot(html);
+  let bottom = 30;
+  const gradient = polygon([1, 2], [3, 4], custom);
+
+  t.true(gradient.includes(`points="1,30 1,3 2,4 2,30 "`));
+  t.true(gradient.includes(`fill="${custom.fill}"`));
+  t.true(gradient.includes(`stroke="${custom.stroke}"`));
+  t.true(gradient.includes(`stroke-width="${custom.strokeWidth}"`));
+  t.true(gradient.includes(`style="${custom.style}"`));
+
+});
+
 
 test("if range can be sorted ascending", t => {
   const range = [
