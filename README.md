@@ -10,15 +10,13 @@
 - Just generates a `<svg>` line chart. NO EXTRA JS OR CSS.
 - Responsiveness through `<svg>` tag
 - Unit tests & Small code base
-- Node.js & Browser
+- CJS and ESM bundles
 
 ## Screenshot
 
 ![](./assets/screenshot.png)
 
 ## Installation
-
-Works for browser and node.js.
 
 ```bash
 $ npm i svg-line-chart vhtml htm
@@ -94,6 +92,11 @@ const svgChart = plot(html)(
   that it'll return the number specified.
 
 ## Changelog
+
+### 0.3.0
+
+- Add `polygon` and `polygonGradient` options.
+- Export CommonJS and EcmaScript Modules side-by-side.
 
 ### 0.2.0
 
