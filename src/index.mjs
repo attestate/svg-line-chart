@@ -282,7 +282,7 @@ export function getMinMax(range, margin = 0) {
  * @returns {Number[]} Array of scaled points
  */
 export function scalePoints(from, to, min, max, range) {
-  // NOTE: For explaination see: https://stackoverflow.com/a/31687097/1263876
+  // NOTE: For explaination see: https://stackoverflow.com/a/5295202/11370119
   const scale = val =>
     to - (((to - from) * (val - min)) / (max - min));
   return range.map(scale);
