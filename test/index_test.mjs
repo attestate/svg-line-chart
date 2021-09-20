@@ -207,15 +207,22 @@ test("if scaling points and adding a margin works", t => {
   t.is(p2, 1);
 });
 
+test("if the min point scales to 'to' and the max point scales to 'from'", t => {
+  const points = [8, 9, 11, 15, 20, 10, 16];
+  const { min, max } = getMinMax(points);
+  const scaledPoints = scalePoints(5, 30, min, max, points);
+  t.deepEqual(scaledPoints, [30, 27.916666666666668, 23.75, 15.416666666666666, 5, 25.833333333333332, 13.333333333333332])
+});
+
 test("if scaling points, adding a margin and an offset works", t => {
   const points = [1, 2];
   const margin = 1;
   const from = 1;
   const to = 4;
   const { min, max } = getMinMax(points, margin);
-  const [p1, p2] = scalePoints(from, to, min, max, points);
-  t.is(p1, 2);
-  t.is(p2, 1);
+  const [p1, p2] = scalePoints(from, to, min, max, points); // 1 4 0 3 [1, 2]
+  t.is(p1, 3);
+  t.is(p2, 2);
 });
 
 test("if param-case for object is applied", t => {
