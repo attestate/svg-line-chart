@@ -12,6 +12,11 @@ import { paramCase } from "param-case";
 const offsetX = 10;
 const offsetY = 5;
 
+const PADDING = {
+  RIGHT: 3,
+  TOP: 2
+}
+
 let html;
 
 export function plot(renderer) {
@@ -20,12 +25,12 @@ export function plot(renderer) {
 }
 
 function _plot(data, options) {
-  const { x, labels } = scaleDates(offsetX, options.width, data.x);
+  const { x, labels } = scaleDates(offsetX, options.width-PADDING.RIGHT, data.x);
 
   const { min, max } = getMinMax(data.y, options.margin);
-  const y = scalePoints(offsetY, options.height, min, max, data.y);
+  const y = scalePoints(PADDING.TOP, options.height-offsetY, min, max, data.y);
   const yPoints = generateLabelRange(min, max, options.yNumLabels);
-  const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
+  const yScaledLabels = scalePoints(PADDING.TOP, options.height-offsetY, min, max, yPoints);
 
   const l = polyline(x, y, options.line);
   const gradient = polygon(x, y, options);
@@ -243,16 +248,29 @@ export function getMinMax(range, margin = 0) {
   };
 }
 
+/**
+ * Scale the given points into the range [from, to].
+ * 
+ * Points closer to min will be scaled closer to 'to'.
+ * Points closer to max will be scaled closer to 'from'.
+ * 
+ * Example - scalePoints(5, 30, 8, 20, [8, 9, 10, 11, 15, 16, 20])
+ * = [30, 27.916666666666668, 25.833333333333332, 23.75, 15.416666666666666, 13.333333333333332, 5]
+ * 
+ * Note: It is not necesarry for input range to include
+ * min and max.
+ * 
+ * @param from {Number} Lower bound of output range
+ * @param to {Number} Upper bound of output range
+ * @param min {number} Minimum value of the input range
+ * @param max {Number} Maximum value of the input range
+ * @param range {Number[]} Points within the range [min, max] to be scaled
+ * @returns {Number[]} Array of scaled points
+ */
 export function scalePoints(from, to, min, max, range) {
-  const minAllowed = from;
-  const maxAllowed = to;
-
   // NOTE: For explaination see: https://stackoverflow.com/a/31687097/1263876
   const scale = val =>
-    to -
-    from * 2 -
-    ((maxAllowed - minAllowed) * (val - min)) / (max - min) +
-    minAllowed;
+    to - (((to - from) * (val - min)) / (max - min));
   return range.map(scale);
 }
 
