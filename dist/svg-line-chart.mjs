@@ -11268,17 +11268,21 @@ var import_date_fns = __toModule(require_date_fns());
 var import_param_case = __toModule(require_dist4());
 var offsetX = 10;
 var offsetY = 5;
+var PADDING = {
+  RIGHT: 3,
+  TOP: 2
+};
 var html;
 function plot(renderer) {
   html = renderer;
   return _plot;
 }
 function _plot(data, options) {
-  const {x, labels} = scaleDates(offsetX, options.width, data.x);
+  const {x, labels} = scaleDates(offsetX, options.width - PADDING.RIGHT, data.x);
   const {min, max} = getMinMax(data.y, options.margin);
-  const y = scalePoints(offsetY, options.height, min, max, data.y);
+  const y = scalePoints(PADDING.TOP, options.height - offsetY, min, max, data.y);
   const yPoints = generateLabelRange(min, max, options.yNumLabels);
-  const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
+  const yScaledLabels = scalePoints(PADDING.TOP, options.height - offsetY, min, max, yPoints);
   const l = polyline(x, y, options.line);
   const gradient = polygon(x, y, options);
   return html`
@@ -11422,9 +11426,7 @@ function getMinMax(range, margin = 0) {
   };
 }
 function scalePoints(from, to, min, max, range) {
-  const minAllowed = from;
-  const maxAllowed = to;
-  const scale = (val) => to - from * 2 - (maxAllowed - minAllowed) * (val - min) / (max - min) + minAllowed;
+  const scale = (val) => to - (to - from) * (val - min) / (max - min);
   return range.map(scale);
 }
 function toParamCase(obj) {
