@@ -169,13 +169,13 @@ test("if labels are shown at right position", t => {
 
   const total = 3;
 
-  const { x, labels } = scaleDates(0, total, range, isSameDay);
+  const { x, xScaledLabels } = scaleDates(0, total, range, isSameDay);
   const [p1, p2, p3] = x;
   t.is(p1, 0);
   t.true(p2 > p1 && p2 < p3);
   t.is(p3, total);
 
-  const [l1, l2, l3] = labels;
+  const [l1, l2, l3] = xScaledLabels;
   t.true(l1.pos < l2.pos < l3.pos);
   t.true(l1.pos >= 0);
   t.true(l3.pos <= total);

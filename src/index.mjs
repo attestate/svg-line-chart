@@ -25,7 +25,7 @@ export function plot(renderer) {
 }
 
 function _plot(data, options) {
-  const { x, labels } = scaleDates(offsetX, options.width-PADDING.RIGHT, data.x);
+  const { x, xScaledLabels } = scaleDates(offsetX, options.width-PADDING.RIGHT, data.x);
 
   const { min, max } = getMinMax(data.y, options.margin);
   const y = scalePoints(PADDING.TOP, options.height-offsetY, min, max, data.y);
@@ -33,10 +33,10 @@ function _plot(data, options) {
   const yScaledLabels = scalePoints(PADDING.TOP, options.height-offsetY, min, max, yPoints);
 
   const xGridLines = [
-    ...labels,
+    ...xScaledLabels,
     {
       // Based on the fact that lines are equidistant from each other
-      pos: labels[labels.length - 1].pos + labels[1].pos - labels[0].pos,
+      pos: xScaledLabels[xScaledLabels.length - 1].pos + xScaledLabels[1].pos - xScaledLabels[0].pos,
     },
   ];
   const yGridLines = [
@@ -97,7 +97,7 @@ function _plot(data, options) {
       ${yGridLines.map(p => {
         return renderAxis(offsetX, options.width, p, p, options.yLabel);
       })}
-      ${labels.map(({ pos, name }) => {
+      ${xScaledLabels.map(({ pos, name }) => {
         return axisLabel(
           pos,
           options.height - offsetY / 2,
@@ -242,7 +242,7 @@ export function scaleDates(
     };
   });
 
-  return { x, labels };
+  return { x, xScaledLabels: labels };
 }
 
 export function getMinMax(range, margin = 0) {
