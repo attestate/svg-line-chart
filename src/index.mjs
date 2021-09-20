@@ -32,6 +32,20 @@ function _plot(data, options) {
   const yPoints = generateLabelRange(min, max, options.yNumLabels);
   const yScaledLabels = scalePoints(PADDING.TOP, options.height-offsetY, min, max, yPoints);
 
+  const xGridLines = [
+    ...labels,
+    {
+      // Based on the fact that lines are equidistant from each other
+      pos: labels[labels.length - 1].pos + labels[1].pos - labels[0].pos,
+    },
+  ];
+  const yGridLines = [
+    ...yScaledLabels,
+    // Based on the fact that lines are equidistant from each other
+    yScaledLabels[yScaledLabels.length - 1] -
+      (yScaledLabels[0] - yScaledLabels[1]),
+  ];
+
   const l = polyline(x, y, options.line);
   const gradient = polygon(x, y, options);
 
@@ -80,7 +94,7 @@ function _plot(data, options) {
         // NOTE: +0.5 is to center text vertically
         return axisLabel(offsetX / 2, scaledPoint + 0.5, p, options.yLabel);
       })}
-      ${yScaledLabels.map(p => {
+      ${yGridLines.map(p => {
         return renderAxis(offsetX, options.width, p, p, options.yLabel);
       })}
       ${labels.map(({ pos, name }) => {
@@ -91,7 +105,7 @@ function _plot(data, options) {
           options.xLabel
         );
       })}
-      ${labels.map(({ pos }, i) => {
+      ${xGridLines.map(({ pos }, i) => {
         // NOTE: We don't want to draw over the y axis, hence for the first
         // element we don't draw.
         if (i === 0) return;
