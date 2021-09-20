@@ -19,7 +19,7 @@
     "build": "npm run build:node:cjs && npm run build:node:esm && npm run build:browser",
     "test": "ava --verbose",
     "dev": "nodemon scripts/serve.mjs",
-    "git:add": "git update-index --add dist/browser-svg-line-chart.js dist/browser-svg-line-chart.js.map dist/svg-line-chart.js"
+    "git:add": "git update-index --add dist/*"
   },
   "pre-commit": [
     "test",
