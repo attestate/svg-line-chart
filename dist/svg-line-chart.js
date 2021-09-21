@@ -11288,17 +11288,31 @@ var import_date_fns = __toModule(require_date_fns());
 var import_param_case = __toModule(require_dist4());
 var offsetX = 10;
 var offsetY = 5;
+var PADDING = {
+  RIGHT: 3,
+  TOP: 2
+};
 var html;
 function plot(renderer) {
   html = renderer;
   return _plot;
 }
 function _plot(data, options) {
-  const {x, labels} = scaleDates(offsetX, options.width, data.x);
+  const {x, xScaledLabels} = scaleDates(offsetX, options.width - PADDING.RIGHT, data.x);
   const {min, max} = getMinMax(data.y, options.margin);
-  const y = scalePoints(offsetY, options.height, min, max, data.y);
+  const y = scalePoints(PADDING.TOP, options.height - offsetY, min, max, data.y);
   const yPoints = generateLabelRange(min, max, options.yNumLabels);
-  const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
+  const yScaledLabels = scalePoints(PADDING.TOP, options.height - offsetY, min, max, yPoints);
+  const xGridLines = [
+    ...xScaledLabels,
+    {
+      pos: xScaledLabels[xScaledLabels.length - 1].pos + xScaledLabels[1].pos - xScaledLabels[0].pos
+    }
+  ];
+  const yGridLines = [
+    ...yScaledLabels,
+    yScaledLabels[yScaledLabels.length - 1] - (yScaledLabels[0] - yScaledLabels[1])
+  ];
   const l = polyline(x, y, options.line);
   const gradient = polygon(x, y, options);
   return html`
@@ -11326,13 +11340,13 @@ function _plot(data, options) {
     const scaledPoint = yScaledLabels[i];
     return axisLabel(offsetX / 2, scaledPoint + 0.5, p, options.yLabel);
   })}
-      ${yScaledLabels.map((p) => {
+      ${yGridLines.map((p) => {
     return renderAxis(offsetX, options.width, p, p, options.yLabel);
   })}
-      ${labels.map(({pos, name}) => {
+      ${xScaledLabels.map(({pos, name}) => {
     return axisLabel(pos, options.height - offsetY / 2, name, options.xLabel);
   })}
-      ${labels.map(({pos}, i) => {
+      ${xGridLines.map(({pos}, i) => {
     if (i === 0)
       return;
     return renderAxis(pos, pos, 0, options.height - offsetY, options.xLabel);
@@ -11428,7 +11442,7 @@ function scaleDates(from, to, range, equalityOp = import_date_fns.isSameDay, ran
       name: (0, import_date_fns.format)(firstDayOfMonth, "MMM yyyy")
     };
   });
-  return {x, labels};
+  return {x, xScaledLabels: labels};
 }
 function getMinMax(range, margin = 0) {
   const max = Math.max.apply(Math, range) + margin;
@@ -11442,9 +11456,7 @@ function getMinMax(range, margin = 0) {
   };
 }
 function scalePoints(from, to, min, max, range) {
-  const minAllowed = from;
-  const maxAllowed = to;
-  const scale = (val) => to - from * 2 - (maxAllowed - minAllowed) * (val - min) / (max - min) + minAllowed;
+  const scale = (val) => to - (to - from) * (val - min) / (max - min);
   return range.map(scale);
 }
 function toParamCase(obj) {

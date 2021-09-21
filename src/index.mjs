@@ -12,6 +12,11 @@ import { paramCase } from "param-case";
 const offsetX = 10;
 const offsetY = 5;
 
+const PADDING = {
+  RIGHT: 3,
+  TOP: 2
+}
+
 let html;
 
 export function plot(renderer) {
@@ -20,12 +25,26 @@ export function plot(renderer) {
 }
 
 function _plot(data, options) {
-  const { x, labels } = scaleDates(offsetX, options.width, data.x);
+  const { x, xScaledLabels } = scaleDates(offsetX, options.width-PADDING.RIGHT, data.x);
 
   const { min, max } = getMinMax(data.y, options.margin);
-  const y = scalePoints(offsetY, options.height, min, max, data.y);
+  const y = scalePoints(PADDING.TOP, options.height-offsetY, min, max, data.y);
   const yPoints = generateLabelRange(min, max, options.yNumLabels);
-  const yScaledLabels = scalePoints(offsetY, options.height, min, max, yPoints);
+  const yScaledLabels = scalePoints(PADDING.TOP, options.height-offsetY, min, max, yPoints);
+
+  const xGridLines = [
+    ...xScaledLabels,
+    {
+      // Based on the fact that lines are equidistant from each other
+      pos: xScaledLabels[xScaledLabels.length - 1].pos + xScaledLabels[1].pos - xScaledLabels[0].pos,
+    },
+  ];
+  const yGridLines = [
+    ...yScaledLabels,
+    // Based on the fact that lines are equidistant from each other
+    yScaledLabels[yScaledLabels.length - 1] -
+      (yScaledLabels[0] - yScaledLabels[1]),
+  ];
 
   const l = polyline(x, y, options.line);
   const gradient = polygon(x, y, options);
@@ -75,10 +94,10 @@ function _plot(data, options) {
         // NOTE: +0.5 is to center text vertically
         return axisLabel(offsetX / 2, scaledPoint + 0.5, p, options.yLabel);
       })}
-      ${yScaledLabels.map(p => {
+      ${yGridLines.map(p => {
         return renderAxis(offsetX, options.width, p, p, options.yLabel);
       })}
-      ${labels.map(({ pos, name }) => {
+      ${xScaledLabels.map(({ pos, name }) => {
         return axisLabel(
           pos,
           options.height - offsetY / 2,
@@ -86,7 +105,7 @@ function _plot(data, options) {
           options.xLabel
         );
       })}
-      ${labels.map(({ pos }, i) => {
+      ${xGridLines.map(({ pos }, i) => {
         // NOTE: We don't want to draw over the y axis, hence for the first
         // element we don't draw.
         if (i === 0) return;
@@ -223,7 +242,7 @@ export function scaleDates(
     };
   });
 
-  return { x, labels };
+  return { x, xScaledLabels: labels };
 }
 
 export function getMinMax(range, margin = 0) {
@@ -243,16 +262,29 @@ export function getMinMax(range, margin = 0) {
   };
 }
 
+/**
+ * Scale the given points into the range [from, to].
+ * 
+ * Points closer to min will be scaled closer to 'to'.
+ * Points closer to max will be scaled closer to 'from'.
+ * 
+ * Example - scalePoints(5, 30, 8, 20, [8, 9, 10, 11, 15, 16, 20])
+ * = [30, 27.916666666666668, 25.833333333333332, 23.75, 15.416666666666666, 13.333333333333332, 5]
+ * 
+ * Note: It is not necesarry for input range to include
+ * min and max.
+ * 
+ * @param from {Number} Lower bound of output range
+ * @param to {Number} Upper bound of output range
+ * @param min {number} Minimum value of the input range
+ * @param max {Number} Maximum value of the input range
+ * @param range {Number[]} Points within the range [min, max] to be scaled
+ * @returns {Number[]} Array of scaled points
+ */
 export function scalePoints(from, to, min, max, range) {
-  const minAllowed = from;
-  const maxAllowed = to;
-
-  // NOTE: For explaination see: https://stackoverflow.com/a/31687097/1263876
+  // NOTE: For explaination see: https://stackoverflow.com/a/5295202/11370119
   const scale = val =>
-    to -
-    from * 2 -
-    ((maxAllowed - minAllowed) * (val - min)) / (max - min) +
-    minAllowed;
+    to - (((to - from) * (val - min)) / (max - min));
   return range.map(scale);
 }
 
