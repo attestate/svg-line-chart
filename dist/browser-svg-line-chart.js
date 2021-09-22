@@ -14,13 +14,13 @@
       </defs>
 
       <title>${r.title}</title>
+      ${u.map(p=>Z(U,r.width,p,p,r.yLabel))}
+      ${d.map(({pos:p},j)=>{if(j!==0)return Z(p,p,0,r.height-w,r.xLabel)})}
       ${Z(U,U,0,r.height-w,r.xAxis)}
       ${Z(U,r.width,r.height-w,r.height-w,r.yAxis)}
       ${he(0,(r.height-w)/2,r.yLabel.name,ye({style:"transform: rotate(-90deg);"},r.yLabel),{style:"transform: translate(-15%, 55%)"})}
       ${f.map((p,j)=>{let g=s[j];return he(U/2,g+.5,p,r.yLabel)})}
-      ${u.map(p=>Z(U,r.width,p,p,r.yLabel))}
       ${t.map(({pos:p,name:j})=>he(p,r.height-w/2,j,r.xLabel))}
-      ${d.map(({pos:p},j)=>{if(j!==0)return Z(p,p,0,r.height-w,r.xLabel)})}
       ${h} ${l}
     </svg>
   `}function ur(e,r,a){if(a=K(a),e.length!==r.length)throw new Error(`x and y parameters need to be of same length. They are not: x (${e.length}) and y (${r.length}).`);if(e.length===0)throw new Error("Length of data x and y cannot be zero");let t="";for(let n=0;n<e.length;n++)t+=`${e[n]},${r[n]} `;return t=t.slice(0,-1),E`
