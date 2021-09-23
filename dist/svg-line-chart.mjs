@@ -11319,6 +11319,7 @@ function _plot(data, options) {
       return;
     return renderAxis(pos, pos, 0, options.height - offsetY, options.xLabel);
   })}
+      ${l} ${gradient}
       ${renderAxis(offsetX, offsetX, 0, options.height - offsetY, options.xAxis)}
       ${renderAxis(offsetX, options.width, options.height - offsetY, options.height - offsetY, options.yAxis)}
       ${axisLabel(0, (options.height - offsetY) / 2, options.yLabel.name, __objSpread({
@@ -11331,7 +11332,6 @@ function _plot(data, options) {
       ${xScaledLabels.map(({pos, name}) => {
     return axisLabel(pos, options.height - offsetY / 2, name, options.xLabel);
   })}
-      ${l} ${gradient}
     </svg>
   `;
 }

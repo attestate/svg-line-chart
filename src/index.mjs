@@ -80,6 +80,7 @@ function _plot(data, options) {
           options.xLabel
         );
       })}
+      ${l} ${gradient}
       ${renderAxis(
         offsetX,
         offsetX,
@@ -117,7 +118,6 @@ function _plot(data, options) {
           options.xLabel
         );
       })}
-      ${l} ${gradient}
     </svg>
   `;
 }
