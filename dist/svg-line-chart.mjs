@@ -11311,6 +11311,15 @@ function _plot(data, options) {
       </defs>
 
       <title>${options.title}</title>
+      ${yGridLines.map((p) => {
+    return renderAxis(offsetX, options.width, p, p, options.yLabel);
+  })}
+      ${xGridLines.map(({pos}, i) => {
+    if (i === 0)
+      return;
+    return renderAxis(pos, pos, 0, options.height - offsetY, options.xLabel);
+  })}
+      ${l} ${gradient}
       ${renderAxis(offsetX, offsetX, 0, options.height - offsetY, options.xAxis)}
       ${renderAxis(offsetX, options.width, options.height - offsetY, options.height - offsetY, options.yAxis)}
       ${axisLabel(0, (options.height - offsetY) / 2, options.yLabel.name, __objSpread({
@@ -11320,18 +11329,9 @@ function _plot(data, options) {
     const scaledPoint = yScaledLabels[i];
     return axisLabel(offsetX / 2, scaledPoint + 0.5, p, options.yLabel);
   })}
-      ${yGridLines.map((p) => {
-    return renderAxis(offsetX, options.width, p, p, options.yLabel);
-  })}
       ${xScaledLabels.map(({pos, name}) => {
     return axisLabel(pos, options.height - offsetY / 2, name, options.xLabel);
   })}
-      ${xGridLines.map(({pos}, i) => {
-    if (i === 0)
-      return;
-    return renderAxis(pos, pos, 0, options.height - offsetY, options.xLabel);
-  })}
-      ${l} ${gradient}
     </svg>
   `;
 }

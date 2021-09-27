@@ -65,6 +65,22 @@ function _plot(data, options) {
       </defs>
 
       <title>${options.title}</title>
+      ${yGridLines.map(p => {
+        return renderAxis(offsetX, options.width, p, p, options.yLabel);
+      })}
+      ${xGridLines.map(({ pos }, i) => {
+        // NOTE: We don't want to draw over the y axis, hence for the first
+        // element we don't draw.
+        if (i === 0) return;
+        return renderAxis(
+          pos,
+          pos,
+          0,
+          options.height - offsetY,
+          options.xLabel
+        );
+      })}
+      ${l} ${gradient}
       ${renderAxis(
         offsetX,
         offsetX,
@@ -94,9 +110,6 @@ function _plot(data, options) {
         // NOTE: +0.5 is to center text vertically
         return axisLabel(offsetX / 2, scaledPoint + 0.5, p, options.yLabel);
       })}
-      ${yGridLines.map(p => {
-        return renderAxis(offsetX, options.width, p, p, options.yLabel);
-      })}
       ${xScaledLabels.map(({ pos, name }) => {
         return axisLabel(
           pos,
@@ -105,19 +118,6 @@ function _plot(data, options) {
           options.xLabel
         );
       })}
-      ${xGridLines.map(({ pos }, i) => {
-        // NOTE: We don't want to draw over the y axis, hence for the first
-        // element we don't draw.
-        if (i === 0) return;
-        return renderAxis(
-          pos,
-          pos,
-          0,
-          options.height - offsetY,
-          options.xLabel
-        );
-      })}
-      ${l} ${gradient}
     </svg>
   `;
 }
