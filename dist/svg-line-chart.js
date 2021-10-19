@@ -11454,9 +11454,10 @@ function scaleDates(from, to, range, equalityOp = import_date_fns.isSameDay, ran
   });
   const labels = months.map((firstDayOfMonth) => {
     const distanceFromStart = (0, import_date_fns.differenceInDays)(firstDayOfMonth, start);
+    const _name = (0, import_date_fns.format)(firstDayOfMonth, "MMM yy"), name = [_name.slice(0, -2), "'", _name.slice(-2)].join("");
     return {
-      pos: from + distanceFromStart * pWidth,
-      name: (0, import_date_fns.format)(firstDayOfMonth, "MMM yyyy")
+      name,
+      pos: from + distanceFromStart * pWidth
     };
   });
   return {x, xScaledLabels: labels};
