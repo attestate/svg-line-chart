@@ -11273,6 +11273,23 @@ var PADDING = {
   TOP: 2
 };
 var html;
+function eachMonthOfInterval(interval) {
+  if (!interval || typeof interval !== "object")
+    return null;
+  const startDate = new Date(interval.start.getTime());
+  const endDate = new Date(interval.end.getTime());
+  const endTime = endDate.getTime();
+  const dates = [];
+  if (!(startDate.getTime() <= endTime)) {
+    throw new RangeError("Invalid interval");
+  }
+  const currentDate = startDate;
+  while (currentDate.getTime() <= endTime) {
+    dates.push(new Date(currentDate));
+    currentDate.setMonth(currentDate.getMonth() + 1, 1);
+  }
+  return dates;
+}
 function plot(renderer) {
   html = renderer;
   return _plot;
@@ -11411,7 +11428,7 @@ function scaleDates(from, to, range, equalityOp = import_date_fns.isSameDay, ran
     const pos = from + distanceFromStart * pWidth;
     return pos;
   });
-  const months = (0, import_date_fns.eachMonthOfInterval)({
+  const months = eachMonthOfInterval({
     start: range[0],
     end: range[range.length - 1]
   });

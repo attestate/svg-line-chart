@@ -1,6 +1,5 @@
 // @format
 import {
-  eachMonthOfInterval,
   isAfter,
   isSameDay,
   format,
@@ -18,6 +17,36 @@ const PADDING = {
 }
 
 let html;
+
+function eachMonthOfInterval(interval) {
+  // Return if invalid argument.
+  if (!interval || typeof interval !== 'object') return null;
+
+  // Get start and end dates.
+  const startDate = new Date(interval.start.getTime());
+  const endDate = new Date(interval.end.getTime());
+
+  const endTime = endDate.getTime();
+  const dates = [];
+
+  // Throw an exception if start date is after end date or if any date
+  // is invalid.
+  if (!(startDate.getTime() <= endTime)) {
+    throw new RangeError('Invalid interval');
+  }
+
+  const currentDate = startDate;
+
+  while (currentDate.getTime() <= endTime) {
+    // Push current date to dates array
+    dates.push(new Date(currentDate));
+
+    // Increment month, starting on first day.
+    currentDate.setMonth(currentDate.getMonth() + 1, 1);
+  }
+
+  return dates
+}
 
 export function plot(renderer) {
   html = renderer;
@@ -234,6 +263,7 @@ export function scaleDates(
     start: range[0],
     end: range[range.length - 1]
   });
+
   const labels = months.map(firstDayOfMonth => {
     const distanceFromStart = differenceInDays(firstDayOfMonth, start);
     return {
