@@ -266,9 +266,16 @@ export function scaleDates(
 
   const labels = months.map(firstDayOfMonth => {
     const distanceFromStart = differenceInDays(firstDayOfMonth, start);
+
+    const
+      // Get formatted date.
+      _name = format(firstDayOfMonth, "MMM yy"),
+      // Abbreviate date and add an apostrophe.
+      name = [_name.slice( 0, -2 ), "'", _name.slice( -2 )].join('')
+
     return {
+      name,
       pos: from + distanceFromStart * pWidth,
-      name: format(firstDayOfMonth, "MMM yyyy")
     };
   });
 
