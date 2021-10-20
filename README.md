@@ -93,6 +93,14 @@ const svgChart = plot(html)(
 
 ## Changelog
 
+### 0.3.1
+
+- Fix cut of text labels at the border of the graph
+- Stop gradient painting over x-axis
+- Stop grey lines cutting into x and y-axis
+- Fix timezone bug; Library can now be used in PST timezone without problems
+- Remove redundant year number from x axis labels
+
 ### 0.3.0
 
 - Add `polygon` and `polygonGradient` options.
