@@ -29,6 +29,6 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - name: Run tests with ${{ matrix.timezone }} timezone
-        run: npm test
+        run: npm run test:coverage
         env:
           TZ: ${{ matrix.timezone }}
