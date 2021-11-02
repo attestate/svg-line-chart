@@ -10,6 +10,7 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-      "camelcase": "error"
+      "camelcase": "error",
+      "no-unused-vars": "warn"
     }
 };
