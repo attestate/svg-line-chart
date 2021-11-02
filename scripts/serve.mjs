@@ -70,6 +70,14 @@ http
           fontSize: 1.5,
           name: "PRICE (EUR)"
         },
+        xGrid: {
+          strokeWidth: 0.05,
+          stroke: "black"
+        },
+        yGrid: {
+          strokeWidth: 0.05,
+          stroke: "black"
+        },
         yNumLabels: 10
       }
     );
