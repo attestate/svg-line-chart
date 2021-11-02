@@ -95,7 +95,7 @@ function _plot(data, options) {
 
       <title>${options.title}</title>
       ${yGridLines.map(p => {
-        return renderAxis(offsetX, options.width, p, p, options.yLabel);
+        return renderAxis(offsetX, options.width, p, p, options.yGrid);
       })}
       ${xGridLines.map(({ pos }, i) => {
         // NOTE: We don't want to draw over the y axis, hence for the first
@@ -106,7 +106,7 @@ function _plot(data, options) {
           pos,
           0,
           options.height - offsetY,
-          options.xLabel
+          options.xGrid
         );
       })}
       ${l} ${gradient}
@@ -301,16 +301,16 @@ export function getMinMax(range, margin = 0) {
 
 /**
  * Scale the given points into the range [from, to].
- * 
+ *
  * Points closer to min will be scaled closer to 'to'.
  * Points closer to max will be scaled closer to 'from'.
- * 
+ *
  * Example - scalePoints(5, 30, 8, 20, [8, 9, 10, 11, 15, 16, 20])
  * = [30, 27.916666666666668, 25.833333333333332, 23.75, 15.416666666666666, 13.333333333333332, 5]
- * 
+ *
  * Note: It is not necesarry for input range to include
  * min and max.
- * 
+ *
  * @param from {Number} Lower bound of output range
  * @param to {Number} Upper bound of output range
  * @param min {number} Minimum value of the input range
