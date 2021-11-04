@@ -11313,7 +11313,7 @@ function _plot(data, options) {
   const l = polyline(x, y, options.line);
   const gradient = polygon(x, y, options);
   return html`
-    <svg viewBox="0 0 ${options.width} ${options.height}">
+    <svg ...${options.props} viewBox="0 0 ${options.width} ${options.height}">
       <defs>
         <linearGradient id="polygrad">
           <stop

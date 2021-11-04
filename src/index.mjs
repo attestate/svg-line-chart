@@ -14,13 +14,13 @@ const offsetY = 5;
 const PADDING = {
   RIGHT: 3,
   TOP: 2
-}
+};
 
 let html;
 
 function eachMonthOfInterval(interval) {
   // Return if invalid argument.
-  if (!interval || typeof interval !== 'object') return null;
+  if (!interval || typeof interval !== "object") return null;
 
   // Get start and end dates.
   const startDate = new Date(interval.start.getTime());
@@ -32,7 +32,7 @@ function eachMonthOfInterval(interval) {
   // Throw an exception if start date is after end date or if any date
   // is invalid.
   if (!(startDate.getTime() <= endTime)) {
-    throw new RangeError('Invalid interval');
+    throw new RangeError("Invalid interval");
   }
 
   const currentDate = startDate;
@@ -45,7 +45,7 @@ function eachMonthOfInterval(interval) {
     currentDate.setMonth(currentDate.getMonth() + 1, 1);
   }
 
-  return dates
+  return dates;
 }
 
 export function plot(renderer) {
@@ -54,32 +54,51 @@ export function plot(renderer) {
 }
 
 function _plot(data, options) {
-  const { x, xScaledLabels } = scaleDates(offsetX, options.width-PADDING.RIGHT, data.x);
+  const { x, xScaledLabels } = scaleDates(
+    offsetX,
+    options.width - PADDING.RIGHT,
+    data.x
+  );
 
   const { min, max } = getMinMax(data.y, options.margin);
-  const y = scalePoints(PADDING.TOP, options.height-offsetY, min, max, data.y);
+  const y = scalePoints(
+    PADDING.TOP,
+    options.height - offsetY,
+    min,
+    max,
+    data.y
+  );
   const yPoints = generateLabelRange(min, max, options.yNumLabels);
-  const yScaledLabels = scalePoints(PADDING.TOP, options.height-offsetY, min, max, yPoints);
+  const yScaledLabels = scalePoints(
+    PADDING.TOP,
+    options.height - offsetY,
+    min,
+    max,
+    yPoints
+  );
 
   const xGridLines = [
     ...xScaledLabels,
     {
       // Based on the fact that lines are equidistant from each other
-      pos: xScaledLabels[xScaledLabels.length - 1].pos + xScaledLabels[1].pos - xScaledLabels[0].pos,
-    },
+      pos:
+        xScaledLabels[xScaledLabels.length - 1].pos +
+        xScaledLabels[1].pos -
+        xScaledLabels[0].pos
+    }
   ];
   const yGridLines = [
     ...yScaledLabels,
     // Based on the fact that lines are equidistant from each other
     yScaledLabels[yScaledLabels.length - 1] -
-      (yScaledLabels[0] - yScaledLabels[1]),
+      (yScaledLabels[0] - yScaledLabels[1])
   ];
 
   const l = polyline(x, y, options.line);
   const gradient = polygon(x, y, options);
 
   return html`
-    <svg viewBox="0 0 ${options.width} ${options.height}">
+    <svg ...${options.props} viewBox="0 0 ${options.width} ${options.height}">
       <defs>
         <linearGradient id="polygrad">
           <stop
@@ -267,15 +286,14 @@ export function scaleDates(
   const labels = months.map(firstDayOfMonth => {
     const distanceFromStart = differenceInDays(firstDayOfMonth, start);
 
-    const
-      // Get formatted date.
+    const // Get formatted date.
       _name = format(firstDayOfMonth, "MMM yy"),
       // Abbreviate date and add an apostrophe.
-      name = [_name.slice( 0, -2 ), "'", _name.slice( -2 )].join('')
+      name = [_name.slice(0, -2), "'", _name.slice(-2)].join("");
 
     return {
       name,
-      pos: from + distanceFromStart * pWidth,
+      pos: from + distanceFromStart * pWidth
     };
   });
 
@@ -301,16 +319,16 @@ export function getMinMax(range, margin = 0) {
 
 /**
  * Scale the given points into the range [from, to].
- * 
+ *
  * Points closer to min will be scaled closer to 'to'.
  * Points closer to max will be scaled closer to 'from'.
- * 
+ *
  * Example - scalePoints(5, 30, 8, 20, [8, 9, 10, 11, 15, 16, 20])
  * = [30, 27.916666666666668, 25.833333333333332, 23.75, 15.416666666666666, 13.333333333333332, 5]
- * 
+ *
  * Note: It is not necesarry for input range to include
  * min and max.
- * 
+ *
  * @param from {Number} Lower bound of output range
  * @param to {Number} Upper bound of output range
  * @param min {number} Minimum value of the input range
@@ -320,8 +338,7 @@ export function getMinMax(range, margin = 0) {
  */
 export function scalePoints(from, to, min, max, range) {
   // NOTE: For explaination see: https://stackoverflow.com/a/5295202/11370119
-  const scale = val =>
-    to - (((to - from) * (val - min)) / (max - min));
+  const scale = val => to - ((to - from) * (val - min)) / (max - min);
   return range.map(scale);
 }
 

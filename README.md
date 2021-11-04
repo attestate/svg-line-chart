@@ -40,6 +40,9 @@ const y = [0, 1];
 const svgChart = plot(html)(
   { x, y },                                                  
   {                                                          
+    props: {
+      style: "display:block;margin:0 auto;"
+    },
     margin: 10,                                              
     width: 70,                                               
     height: 35,                                              
