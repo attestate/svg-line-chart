@@ -6,7 +6,7 @@
 
 - browser-svg-line-chart.js is 34KB
   ([d3.min.js](https://cdnjs.cloudflare.com/ajax/libs/d3/6.6.2/d3.min.js) is
-  264KB!)
+  264KB!); but it runs on your server only!
 - Just generates a `<svg>` line chart. NO EXTRA JS OR CSS.
 - Responsiveness through `<svg>` tag
 - Unit tests & Small code base
@@ -95,6 +95,11 @@ const svgChart = plot(html)(
   that it'll return the number specified.
 
 ## Changelog
+
+### 0.3.2
+
+- Add `props` attribute to `options` to allow defining properties on the root
+  `<svg>` tag.
 
 ### 0.3.1
 
