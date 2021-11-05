@@ -898,13 +898,13 @@ var require_isSameDay = __commonJS((exports, module2) => {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = isSameDay2;
+  exports.default = isSameDay;
   var _index = _interopRequireDefault(require_startOfDay());
   var _index2 = _interopRequireDefault(require_requiredArgs());
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {default: obj};
   }
-  function isSameDay2(dirtyDateLeft, dirtyDateRight) {
+  function isSameDay(dirtyDateLeft, dirtyDateRight) {
     (0, _index2.default)(2, arguments);
     var dateLeftStartOfDay = (0, _index.default)(dirtyDateLeft);
     var dateRightStartOfDay = (0, _index.default)(dirtyDateRight);
@@ -1115,7 +1115,7 @@ var require_differenceInDays = __commonJS((exports, module2) => {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = differenceInDays2;
+  exports.default = differenceInDays;
   var _index = _interopRequireDefault(require_toDate());
   var _index2 = _interopRequireDefault(require_differenceInCalendarDays());
   var _index3 = _interopRequireDefault(require_requiredArgs());
@@ -1132,7 +1132,7 @@ var require_differenceInDays = __commonJS((exports, module2) => {
       return diff;
     }
   }
-  function differenceInDays2(dirtyDateLeft, dirtyDateRight) {
+  function differenceInDays(dirtyDateLeft, dirtyDateRight) {
     (0, _index3.default)(2, arguments);
     var dateLeft = (0, _index.default)(dirtyDateLeft);
     var dateRight = (0, _index.default)(dirtyDateRight);
@@ -1173,14 +1173,14 @@ var require_differenceInHours = __commonJS((exports, module2) => {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = differenceInHours;
+  exports.default = differenceInHours2;
   var _index = _interopRequireDefault(require_differenceInMilliseconds());
   var _index2 = _interopRequireDefault(require_requiredArgs());
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {default: obj};
   }
   var MILLISECONDS_IN_HOUR = 36e5;
-  function differenceInHours(dirtyDateLeft, dirtyDateRight) {
+  function differenceInHours2(dirtyDateLeft, dirtyDateRight) {
     (0, _index2.default)(2, arguments);
     var diff = (0, _index.default)(dirtyDateLeft, dirtyDateRight) / MILLISECONDS_IN_HOUR;
     return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
@@ -7145,13 +7145,13 @@ var require_isSameHour = __commonJS((exports, module2) => {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = isSameHour;
+  exports.default = isSameHour2;
   var _index = _interopRequireDefault(require_startOfHour());
   var _index2 = _interopRequireDefault(require_requiredArgs());
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {default: obj};
   }
-  function isSameHour(dirtyDateLeft, dirtyDateRight) {
+  function isSameHour2(dirtyDateLeft, dirtyDateRight) {
     (0, _index2.default)(2, arguments);
     var dateLeftStartOfHour = (0, _index.default)(dirtyDateLeft);
     var dateRightStartOfHour = (0, _index.default)(dirtyDateRight);
@@ -11439,12 +11439,12 @@ function insertInto(range, candidates) {
   }
   return insertedAt;
 }
-function scaleDates(from, to, range, equalityOp = import_date_fns.isSameDay, rangeMeasurement = import_date_fns.differenceInDays) {
+function scaleDates(from, to, range, equalityOp = import_date_fns.isSameHour, rangeMeasurement = import_date_fns.differenceInHours) {
   range = sortRangeAsc(range);
   const pWidth = pointWidth(to - from, range, rangeMeasurement);
   const start = range[0];
   const x = range.map((d) => {
-    const distanceFromStart = (0, import_date_fns.differenceInDays)(d, start);
+    const distanceFromStart = rangeMeasurement(d, start);
     const pos = from + distanceFromStart * pWidth;
     return pos;
   });
@@ -11453,7 +11453,7 @@ function scaleDates(from, to, range, equalityOp = import_date_fns.isSameDay, ran
     end: range[range.length - 1]
   });
   const labels = months.map((firstDayOfMonth) => {
-    const distanceFromStart = (0, import_date_fns.differenceInDays)(firstDayOfMonth, start);
+    const distanceFromStart = rangeMeasurement(firstDayOfMonth, start);
     const _name = (0, import_date_fns.format)(firstDayOfMonth, "MMM yy"), name = [_name.slice(0, -2), "'", _name.slice(-2)].join("");
     return {
       name,

@@ -1,10 +1,10 @@
 // @format
 import {
   isAfter,
-  isSameDay,
+  isSameHour,
   format,
   isEqual,
-  differenceInDays
+  differenceInHours
 } from "date-fns";
 import { paramCase } from "param-case";
 
@@ -265,15 +265,15 @@ export function scaleDates(
   from,
   to,
   range,
-  equalityOp = isSameDay,
-  rangeMeasurement = differenceInDays
+  equalityOp = isSameHour,
+  rangeMeasurement = differenceInHours
 ) {
   range = sortRangeAsc(range);
 
   const pWidth = pointWidth(to - from, range, rangeMeasurement);
   const start = range[0];
   const x = range.map(d => {
-    const distanceFromStart = differenceInDays(d, start);
+    const distanceFromStart = rangeMeasurement(d, start);
     const pos = from + distanceFromStart * pWidth;
     return pos;
   });
@@ -284,7 +284,7 @@ export function scaleDates(
   });
 
   const labels = months.map(firstDayOfMonth => {
-    const distanceFromStart = differenceInDays(firstDayOfMonth, start);
+    const distanceFromStart = rangeMeasurement(firstDayOfMonth, start);
 
     const // Get formatted date.
       _name = format(firstDayOfMonth, "MMM yy"),
