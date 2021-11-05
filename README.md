@@ -96,6 +96,11 @@ const svgChart = plot(html)(
 
 ## Changelog
 
+### 0.3.3
+
+- Time between two points horizontally is now scaled as their difference in
+  hours and not their difference in days.
+
 ### 0.3.2
 
 - Add `props` attribute to `options` to allow defining properties on the root
