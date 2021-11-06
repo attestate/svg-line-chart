@@ -11315,10 +11315,11 @@ function plot(renderer) {
   return _plot;
 }
 function _plot(data, options) {
-  const {x, xScaledLabels} = scaleDates(offsetX, options.width - PADDING.RIGHT, data.x);
   const {min, max} = getMinMax(data.y, options.margin);
-  const y = scalePoints(PADDING.TOP, options.height - offsetY, min, max, data.y);
   const yPoints = generateLabelRange(min, max, options.yNumLabels);
+  offsetX = getWidth(options.yLabel.fontSize, yPoints);
+  const {x, xScaledLabels} = scaleDates(offsetX, options.width - PADDING.RIGHT, data.x);
+  const y = scalePoints(PADDING.TOP, options.height - offsetY, min, max, data.y);
   const yScaledLabels = scalePoints(PADDING.TOP, options.height - offsetY, min, max, yPoints);
   const xGridLines = [
     ...xScaledLabels,
@@ -11364,7 +11365,7 @@ function _plot(data, options) {
   }, options.yLabel), {style: "transform: translate(-15%, 55%)"})}
       ${yPoints.map((p, i) => {
     const scaledPoint = yScaledLabels[i];
-    return axisLabel(offsetX / 2, scaledPoint + 0.5, p, options.yLabel);
+    return axisLabel(0, scaledPoint + 0.5, p, options.yLabel);
   })}
       ${xScaledLabels.map(({pos, name}) => {
     return axisLabel(pos, options.height - offsetY / 2, name, options.xLabel);
@@ -11524,6 +11525,14 @@ function generateLabelRange(min, max, numLabels) {
     }
   }
   return labels;
+}
+function getWidth(fontSize, dataPoints) {
+  const characterHeight = Number(fontSize);
+  if (isNan(characterHeight))
+    throw new Error("Invalid fontSize");
+  const characterWidth = characterHeight / 2;
+  const maxWidth = characterWidth * String(Math.max(...dataPoints)).length;
+  return maxWidth + 2;
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
