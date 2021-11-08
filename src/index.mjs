@@ -401,10 +401,10 @@ export function generateLabelRange(min, max, numLabels) {
   return labels;
 }
 
-function getWidth(fontSize, dataPoints) {
+export function getWidth(fontSize, dataPoints) {
   const characterHeight = Number(fontSize) // This height is relative to viewbox and not in px
-  if(isNan(characterHeight)) throw new Error('Invalid fontSize')
-  const characterWidth = characterHeight / 2 // For fonts such as Helvetica and Arial the ratio of width and height is ~2
+  if(isNaN(characterHeight)) throw new Error('Invalid fontSize')
+  const characterWidth = characterHeight / 2 // For fonts such as Helvetica and Arial the ratio of height to width is ~2
   const maxWidth = characterWidth * (String(Math.max(...dataPoints)).length)
   return (maxWidth + 2) // Add padding
 }

@@ -11508,7 +11508,7 @@ function generateLabelRange(min, max, numLabels) {
 }
 function getWidth(fontSize, dataPoints) {
   const characterHeight = Number(fontSize);
-  if (isNan(characterHeight))
+  if (isNaN(characterHeight))
     throw new Error("Invalid fontSize");
   const characterWidth = characterHeight / 2;
   const maxWidth = characterWidth * String(Math.max(...dataPoints)).length;
@@ -11518,6 +11518,7 @@ export {
   axisLabel,
   generateLabelRange,
   getMinMax,
+  getWidth,
   insertInto,
   plot,
   pointWidth,

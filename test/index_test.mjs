@@ -20,6 +20,7 @@ import {
   generateLabelRange,
   insertInto
 } from "../src/index.mjs";
+import { getWidth } from "../src/index.mjs";
 
 const html = htm.bind(vhtml);
 
@@ -265,3 +266,14 @@ test("if dates can be inserted into a range of dates", t => {
   const insertedAt = insertInto(exampleRange, candidates);
   t.deepEqual(insertedAt, [0, 3, 4, 5]);
 });
+
+test("if getWidth returns correct width", t => {
+  const width = getWidth(2, [1000, 800, 600, 400, 200, 0])
+  t.is(width, 6)
+})
+
+test("if getWidth throws error for invalid fontSize", t => {
+  t.throws(() => {
+    getWidth('1.5px', [1000, 800, 600, 400, 200, 0])
+  })
+})
