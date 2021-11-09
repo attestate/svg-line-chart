@@ -156,6 +156,7 @@ function _plot(data, options) {
         { style: "transform: translate(-15%, 55%)" }
       )}
       ${yPoints.map((p, i) => {
+        p = new Intl.NumberFormat('en-US').format(p);
         const scaledPoint = yScaledLabels[i];
         // NOTE: +0.5 is to center text vertically
         return axisLabel(0, scaledPoint + 0.5, p, options.yLabel);
