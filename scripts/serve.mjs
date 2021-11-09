@@ -65,15 +65,19 @@ http
           stroke: "black"
         },
         xLabel: {
-          strokeWidth: 0.05,
-          stroke: "lightgrey",
           fontSize: 1.5
         },
         yLabel: {
-          strokeWidth: 0.05,
-          stroke: "lightgrey",
           fontSize: 1.5,
           name: "PRICE (EUR)"
+        },
+        xGrid: {
+          strokeWidth: 0.05,
+          stroke: "lightgrey"
+        },
+        yGrid: {
+          strokeWidth: 0.05,
+          stroke: "lightgrey"
         },
         yNumLabels: 10
       }
