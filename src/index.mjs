@@ -116,7 +116,7 @@ function _plot(data, options) {
 
       <title>${options.title}</title>
       ${yGridLines.map(p => {
-        return renderAxis(offsetX, options.width, p, p, options.yLabel);
+        return renderAxis(offsetX, options.width, p, p, options.yGrid);
       })}
       ${xGridLines.map(({ pos }, i) => {
         // NOTE: We don't want to draw over the y axis, hence for the first
@@ -127,7 +127,7 @@ function _plot(data, options) {
           pos,
           0,
           options.height - offsetY,
-          options.xLabel
+          options.xGrid
         );
       })}
       ${l} ${gradient}
