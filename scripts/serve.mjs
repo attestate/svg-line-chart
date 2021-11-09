@@ -66,12 +66,10 @@ http
         },
         xLabel: {
           strokeWidth: 0.05,
-          stroke: "lightgrey",
           fontSize: 1.5
         },
         yLabel: {
           strokeWidth: 0.05,
-          stroke: "lightgrey",
           fontSize: 1.5,
           name: "PRICE (EUR)"
         },
