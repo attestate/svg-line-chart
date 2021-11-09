@@ -11528,12 +11528,14 @@ function generateLabelRange(min, max, numLabels) {
   return labels;
 }
 function getWidth(fontSize, dataPoints) {
+  const RATIO = 2;
+  const PADDING2 = 2;
   const characterHeight = Number(fontSize);
   if (isNaN(characterHeight))
     throw new Error("Invalid fontSize");
-  const characterWidth = characterHeight / 2;
+  const characterWidth = characterHeight / RATIO;
   const maxWidth = characterWidth * String(Math.max(...dataPoints)).length;
-  return maxWidth + 2;
+  return maxWidth + PADDING2;
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

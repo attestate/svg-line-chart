@@ -35,7 +35,7 @@
     <g ...${n}>
       <text ...${t} x=${e} y=${r}>${a}</text>
     </g>
-  `}function cr(e,r,a){let n=(r-e)/a,o=Math.pow(10,Math.floor(Math.log10(n))),i;n>o?i=Math.round(n/o):i=Math.round(o/n);let f=[],s=Math.floor(Math.log10(e)),d;s<=2?d=0:d=Math.pow(10,s);for(let u=d;u<=r;u+=o*i)u>e&&u<r&&f.push(u);return f}function xr(e,r){let a=Number(e);if(isNaN(a))throw new Error("Invalid fontSize");return a/2*String(Math.max(...r)).length+2}})();
+  `}function cr(e,r,a){let n=(r-e)/a,o=Math.pow(10,Math.floor(Math.log10(n))),i;n>o?i=Math.round(n/o):i=Math.round(o/n);let f=[],s=Math.floor(Math.log10(e)),d;s<=2?d=0:d=Math.pow(10,s);for(let u=d;u<=r;u+=o*i)u>e&&u<r&&f.push(u);return f}function xr(e,r){let a=2,t=2,n=Number(e);if(isNaN(n))throw new Error("Invalid fontSize");return n/a*String(Math.max(...r)).length+t}})();
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
