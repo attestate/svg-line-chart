@@ -8,7 +8,7 @@ import {
 } from "date-fns";
 import { paramCase } from "param-case";
 
-const offsetX = 10;
+let offsetX = 10;
 const offsetY = 5;
 
 const PADDING = {
@@ -54,13 +54,16 @@ export function plot(renderer) {
 }
 
 function _plot(data, options) {
+  const { min, max } = getMinMax(data.y, options.margin);
+  const yPoints = generateLabelRange(min, max, options.yNumLabels);
+  offsetX = getWidth(options.yLabel.fontSize, yPoints)
+
   const { x, xScaledLabels } = scaleDates(
     offsetX,
     options.width - PADDING.RIGHT,
     data.x
   );
 
-  const { min, max } = getMinMax(data.y, options.margin);
   const y = scalePoints(
     PADDING.TOP,
     options.height - offsetY,
@@ -68,7 +71,6 @@ function _plot(data, options) {
     max,
     data.y
   );
-  const yPoints = generateLabelRange(min, max, options.yNumLabels);
   const yScaledLabels = scalePoints(
     PADDING.TOP,
     options.height - offsetY,
@@ -156,7 +158,7 @@ function _plot(data, options) {
       ${yPoints.map((p, i) => {
         const scaledPoint = yScaledLabels[i];
         // NOTE: +0.5 is to center text vertically
-        return axisLabel(offsetX / 2, scaledPoint + 0.5, p, options.yLabel);
+        return axisLabel(0, scaledPoint + 0.5, p, options.yLabel);
       })}
       ${xScaledLabels.map(({ pos, name }) => {
         return axisLabel(
@@ -397,4 +399,15 @@ export function generateLabelRange(min, max, numLabels) {
   }
 
   return labels;
+}
+
+export function getWidth(fontSize, dataPoints) {
+  const RATIO = 2 // Height to width ratio for common fonts
+  const PADDING = 2
+
+  const characterHeight = Number(fontSize) // This height is relative to viewbox and not in px
+  if(isNaN(characterHeight)) throw new Error('Invalid fontSize')
+  const characterWidth = characterHeight / RATIO
+  const maxWidth = characterWidth * String(Math.max(...dataPoints)).length
+  return maxWidth + PADDING
 }
