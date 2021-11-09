@@ -136,14 +136,14 @@ function _plot(data, options) {
         offsetX,
         0,
         options.height - offsetY,
-        options.xAxis
+        options.yAxis
       )}
       ${renderAxis(
         offsetX,
         options.width,
         options.height - offsetY,
         options.height - offsetY,
-        options.yAxis
+        options.xAxis
       )}
       ${axisLabel(
         0,
