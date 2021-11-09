@@ -20,7 +20,8 @@
     "test": "ava --verbose",
     "test:coverage": "c8 --config .c8rc.json npm run test",
     "dev": "nodemon scripts/serve.mjs",
-    "git:add": "git update-index --add dist/*"
+    "git:add": "git update-index --add dist/*",
+    "lint": "eslint ./src/*"
   },
   "pre-commit": [
     "test",
