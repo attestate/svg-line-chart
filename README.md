@@ -26,7 +26,7 @@ $ npm i svg-line-chart vhtml htm
 
 A working example can be found in
 [`./scripts/serve.mjs`](https://github.com/TimDaub/svg-line-chart/blob/master/scripts/serve.mjs).
-                                                             
+
 ```js                                                        
 import htm from "htm";
 import vhtml from "vhtml";
@@ -72,15 +72,20 @@ const svgChart = plot(html)(
       strokeWidth: 0.1,                                      
       stroke: "black"                                        
     },                                                       
-    xLabel: {                                                
-      strokeWidth: 0.05,                                     
-      stroke: "lightgrey",                                   
-      fontSize: 1.5                                          
-    },                                                       
-    yLabel: {                                                
-      strokeWidth: 0.05,                                     
-      stroke: "lightgrey",                                   
-      fontSize: 1.5                                          
+    xLabel: {
+      fontSize: 1.5
+    },
+    yLabel: {
+      fontSize: 1.5,
+      name: "PRICE (EUR)"
+    },
+    xGrid: {
+      strokeWidth: 0.05,
+      stroke: "lightgrey"
+    },
+    yGrid: {
+      strokeWidth: 0.05,
+      stroke: "lightgrey"
     },                                                       
     yNumLabels: 10
   }
