@@ -77,7 +77,8 @@ const svgChart = plot(html)(
     },
     yLabel: {
       fontSize: 1.5,
-      name: "PRICE (EUR)"
+      name: "PRICE (EUR)",
+      locale: "en-US"
     },
     xGrid: {
       strokeWidth: 0.05,
