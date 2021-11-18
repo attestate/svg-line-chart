@@ -2,19 +2,38 @@
 
 [![npm version](https://badge.fury.io/js/svg-line-chart.svg)](https://badge.fury.io/js/svg-line-chart) [![Node.js CI](https://github.com/TimDaub/svg-line-chart/actions/workflows/node.js.yml/badge.svg)](https://github.com/TimDaub/svg-line-chart/actions/workflows/node.js.yml)
 
-## Why?
+![logo](./assets/logo.png)
 
-- browser-svg-line-chart.js is 34KB
+#### Tired of 200kb charting browser libs? ...I feel ya. Come to the server-side!
+
+#### [API Documentation]() | [Changelog]()
+
+___
+
+## Why another library for charts?
+
+- **Server side** - unlike all 99% available libraries
+- **Minimum size** - browser-svg-line-chart.js is 34KB
   ([d3.min.js](https://cdnjs.cloudflare.com/ajax/libs/d3/6.6.2/d3.min.js) is
-  264KB!); but it runs on your server only!
+  264KB!); anyway size doesn't matter here as it runs on your server!
 - Just generates a `<svg>` line chart. NO EXTRA JS OR CSS.
 - Responsiveness through `<svg>` tag
 - Unit tests & Small code base
 - CJS and ESM bundles
 
+```
+Use Cases?
+```
+
+## About
+
+svg-line-chart is a server side charting library. Create a simple line chart with numbers on the y-axis and [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) on the x-axis.
+
 ## Screenshot
 
 ![](./assets/screenshot.png)
+
+Live demo at https://rugpullindex.com
 
 ## Installation
 
@@ -25,7 +44,7 @@ $ npm i svg-line-chart vhtml htm
 ## Usage
 
 A working example can be found in
-[`./scripts/serve.mjs`](https://github.com/TimDaub/svg-line-chart/blob/master/scripts/serve.mjs).
+[`./scripts/serve.mjs`](./scripts/serve.mjs).
 
 ```js                                                        
 import htm from "htm";
