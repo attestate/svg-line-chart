@@ -6,13 +6,13 @@
 
 #### Tired of 200kb charting browser libs? ...I feel ya. Come to the server-side!
 
-#### [API Documentation]() | [Changelog]()
+#### [API Documentation](./API.md) | [Changelog](./CHANGELOG.md)
 
 ___
 
 ## Why another library for charts?
 
-- **Server side** - unlike all 99% available libraries
+- **Runs on the server** - unlike all 99% available libraries
 - **Minimum size** - browser-svg-line-chart.js is 34KB
   ([d3.min.js](https://cdnjs.cloudflare.com/ajax/libs/d3/6.6.2/d3.min.js) is
   264KB!); anyway size doesn't matter here as it runs on your server!
@@ -20,10 +20,6 @@ ___
 - Responsiveness through `<svg>` tag
 - Unit tests & Small code base
 - CJS and ESM bundles
-
-```
-Use Cases?
-```
 
 ## About
 
@@ -127,72 +123,19 @@ const chart = plot(html)(
   you prefer using `yNumLabels`. Please note that the algorithm behind
   `yNumLabels` is based on a best-effort strategy. There won't be a guarantee
   that it'll return the number specified.
+  
+## API
+The API documentation is available at [API.md](./API.md).
+
+## Contributing
+We love contributions from the community. Find a [good first issue](https://github.com/rugpullindex/svg-line-chart/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
+
+Want to suggest a feature or even better raise a PR for it? Head over to the [issues](https://github.com/rugpullindex/svg-line-chart/issues) section or join our [discord](https://discord.gg/zhawZxgKQz).
+
+You can also get paid for a PR. For more information read our [handbook](https://github.com/rugpullindex/documents/blob/master/handbook.md).
 
 ## Changelog
-
-### 0.3.3
-
-- Time between two points horizontally is now scaled as their difference in
-  hours and not their difference in days.
-
-### 0.3.2
-
-- Add `props` attribute to `options` to allow defining properties on the root
-  `<svg>` tag.
-
-### 0.3.1
-
-- Fix cut of text labels at the border of the graph
-- Stop gradient painting over x-axis
-- Stop grey lines cutting into x and y-axis
-- Fix timezone bug; Library can now be used in PST timezone without problems
-- Remove redundant year number from x axis labels
-
-### 0.3.0
-
-- Add `polygon` and `polygonGradient` options.
-- Export CommonJS and EcmaScript Modules side-by-side.
-
-### 0.2.0
-
-- Breaking change: Remove `yDistance` option
-- Breaking change: Introduce `yNumLabels` option. Internally, add
-  function to scale y label values to the power of ten.
-
-### 0.1.2
-
-- `scaleDates` function didn't consider svg width and rendered beyond right
-  border. It was adjusted to consider the width of the svg and scale the input
-  data points accordingly.
-
-### 0.1.1
-
-- `scaleDates` function assumed a uniformly distributed range of date data
-  points which lead to temporal distortion of the graph. Distance between data
-  points is now calculated precisely with a data-specific range measurement
-  function (e.g. `differenceInDays` from date-fns).
-
-### 0.1.0
-
-- Release targeted bundles for node14 and browsers (minified)
-- Breaking change: Separate `htm` and `vhtml` as `peerDependencies`
-- Switch from `microbundle` to `esbuild`
-
-### 0.0.4
-
-- Target node again
-
-### 0.0.3
-
-- Target node
-
-### 0.0.2
-
-- Improve axis and line rendering through proper render-order
-
-### 0.0.1
-
-- Initial release
+The changelog is avaliable at [CHANGELOG.md](./CHANGELOG.md).
 
 ## License
 
