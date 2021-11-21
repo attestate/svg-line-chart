@@ -27,70 +27,70 @@ $ npm i svg-line-chart vhtml htm
 A working example can be found in
 [`./scripts/serve.mjs`](https://github.com/TimDaub/svg-line-chart/blob/master/scripts/serve.mjs).
 
-```js                                                        
-import htm from "htm";
-import vhtml from "vhtml";
-const html = htm.bind(vhtml);
+```js
+import htm from 'htm'
+import vhtml from 'vhtml'
+const html = htm.bind(vhtml)
 
-import { plot } from "svg-line-chart";
+import { plot } from 'svg-line-chart'
 
-const x = ["2021-01-01T00:00:00.000Z","2021-01-02T00:00:00.000Z"];
-const y = [0, 1];
+const x = ['2021-01-01T00:00:00.000Z', '2021-01-02T00:00:00.000Z']
+const y = [0, 1]
 
 const svgChart = plot(html)(
-  { x, y },                                                  
-  {                                                          
+  { x, y },
+  {
     props: {
-      style: "display:block;margin:0 auto;"
+      style: 'display:block;margin:0 auto;',
     },
-    margin: 10,                                              
-    width: 70,                                               
-    height: 35,                                              
-    title: "A line chart",                                   
+    margin: 10,
+    width: 70,
+    height: 35,
+    title: 'A line chart',
     polygon: {
-      fill: "none",
-      style: "fill:url(#polygrad);",
+      fill: 'none',
+      style: 'fill:url(#polygrad);',
       strokeWidth: 0.01,
-      stroke: "white"
+      stroke: 'white',
     },
     polygonGradient: {
-      offSet1: "0%",
-      stopColor1: "blue",
-      offSet2: "100%",
-      stopColor2: "orange"
+      offSet1: '0%',
+      stopColor1: 'blue',
+      offSet2: '100%',
+      stopColor2: 'orange',
     },
-    line: {                                                  
-      fill: "none",                                          
-      strokeWidth: 0.1,                                      
-      stroke: "black"                                        
-    },                                                       
-    xAxis: {                                                 
-      strokeWidth: 0.1,                                      
-      stroke: "black"                                        
-    },                                                       
-    yAxis: {                                                 
-      strokeWidth: 0.1,                                      
-      stroke: "black"                                        
-    },                                                       
+    line: {
+      fill: 'none',
+      strokeWidth: 0.1,
+      stroke: 'black',
+    },
+    xAxis: {
+      strokeWidth: 0.1,
+      stroke: 'black',
+    },
+    yAxis: {
+      strokeWidth: 0.1,
+      stroke: 'black',
+    },
     xLabel: {
-      fontSize: 1.5
+      fontSize: 1.5,
     },
     yLabel: {
       fontSize: 1.5,
-      name: "PRICE (EUR)",
-      locale: "en-US"
+      name: 'PRICE (EUR)',
+      locale: 'en-US',
     },
     xGrid: {
       strokeWidth: 0.05,
-      stroke: "lightgrey"
+      stroke: 'lightgrey',
     },
     yGrid: {
       strokeWidth: 0.05,
-      stroke: "lightgrey"
-    },                                                       
-    yNumLabels: 10
+      stroke: 'lightgrey',
+    },
+    yNumLabels: 10,
   }
-);
+)
 ```
 
 ### Notes
