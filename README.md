@@ -48,7 +48,7 @@ import vhtml from "vhtml";
 
 const html = htm.bind(vhtml);
 
-import { plot } from "svg-line-chart";
+import { plot } from 'svg-line-chart'
 
 const x = [
   "2021-01-01",
@@ -72,8 +72,8 @@ const chart = plot(html)(
     height: 20,
     title: "A line chart",
     polygon: {
-      fill: "none",
-      style: "fill:url(#polygrad);",
+      fill: 'none',
+      style: 'fill:url(#polygrad);',
       strokeWidth: 0.01,
       stroke: "white",
     },
@@ -114,7 +114,7 @@ const chart = plot(html)(
     },
     yNumLabels: 10,
   }
-);
+)
 ```
 
 ### Notes
