@@ -21,7 +21,9 @@
     "test:coverage": "c8 --config .c8rc.json npm run test",
     "dev": "nodemon scripts/serve.mjs",
     "git:add": "git update-index --add dist/*",
-    "lint": "eslint ./src/*"
+    "lint": "eslint ./src/*",
+    "check-format": "prettier --check .",
+    "format": "prettier --write ."
   },
   "pre-commit": [
     "test",
@@ -60,11 +62,5 @@
     "pre-commit": "1.2.2",
     "prettier": "^2.4.1",
     "vhtml": "^2.2.0"
-  },
-  "prettier": {
-    "trailingComma": "es5",
-    "tabWidth": 4,
-    "semi": false,
-    "singleQuote": true
   }
 }
