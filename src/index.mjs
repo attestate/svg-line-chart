@@ -182,7 +182,7 @@ export function polyline(x, y, options) {
   // NOTE: We pop the last character as it's an unneeded space.
   points = points.slice(0, -1)
 
-  return html` <polyline ...${options} points=${points} /> `
+  return html`<polyline ...${options} points=${points} />`
 }
 
 export function polygon(x, y, options) {
@@ -206,7 +206,7 @@ export function polygon(x, y, options) {
   }
   gradientPoints += `${x[x.length - 1]},${options.height - offsetY} `
 
-  return html` <polygon ...${polygonOptions} points=${gradientPoints} /> `
+  return html`<polygon ...${polygonOptions} points=${gradientPoints} />`
 }
 
 export function sortRangeAsc(range) {
