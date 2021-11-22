@@ -11388,9 +11388,7 @@ function polyline(x, y, options) {
     points += `${x[i]},${y[i]} `;
   }
   points = points.slice(0, -1);
-  return html`
-    <polyline ...${options} points=${points} />
-  `;
+  return html`<polyline ...${options} points=${points} />`;
 }
 function polygon(x, y, options) {
   const polygonOptions = toParamCase(options.polygon);
@@ -11406,9 +11404,7 @@ function polygon(x, y, options) {
     gradientPoints += `${x[i]},${y[i]} `;
   }
   gradientPoints += `${x[x.length - 1]},${options.height - offsetY} `;
-  return html`
-    <polygon ...${polygonOptions} points=${gradientPoints} />
-  `;
+  return html`<polygon ...${polygonOptions} points=${gradientPoints} />`;
 }
 function sortRangeAsc(range) {
   return range.sort((a, b) => a - b);

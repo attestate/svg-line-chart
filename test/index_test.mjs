@@ -3,7 +3,7 @@ import test from 'ava'
 import { isSameDay } from 'date-fns'
 import htm from 'htm'
 import vhtml from 'vhtml'
-import { sub, differenceInDays } from 'date-fns'
+import { differenceInDays } from 'date-fns'
 
 import {
   plot,
@@ -104,7 +104,6 @@ test('if custom options can be set with linear gradient polygon', (t) => {
     },
   }
   plot(html)
-  let bottom = 30
   const gradient = polygon([1, 2], [3, 4], options)
 
   console.log(gradient)
@@ -194,7 +193,7 @@ test('if scaling a simple set of points works', (t) => {
 test('if scaling a complex set of points works', (t) => {
   const points = [0, 5]
   const { min, max } = getMinMax(points)
-  const [p1, p2, p3] = scalePoints(0, 10, min, max, points)
+  const [p1, p2] = scalePoints(0, 10, min, max, points)
   t.is(p1, 10)
   t.is(p2, 0)
 })
@@ -266,8 +265,6 @@ test('if dates can be inserted into a range of dates', (t) => {
     new Date('2021-01-04T00:00:00.000Z'),
     new Date('2021-01-05T00:00:00.000Z'),
   ]
-  const originalCandidatesLength = candidates.length
-  const rangeLength = exampleRange.length
 
   const insertedAt = insertInto(exampleRange, candidates)
   t.deepEqual(insertedAt, [0, 3, 4, 5])
