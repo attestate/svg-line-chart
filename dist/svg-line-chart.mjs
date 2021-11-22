@@ -11330,20 +11330,21 @@ function _plot(data, options) {
 
       <title>${options.title}</title>
       ${yGridLines.map((p) => {
-    return renderAxis(offsetX, options.width, p, p, options.yLabel);
+    return renderAxis(offsetX, options.width, p, p, options.yGrid);
   })}
       ${xGridLines.map(({pos}, i) => {
     if (i === 0)
       return;
-    return renderAxis(pos, pos, 0, options.height - offsetY, options.xLabel);
+    return renderAxis(pos, pos, 0, options.height - offsetY, options.xGrid);
   })}
       ${l} ${gradient}
-      ${renderAxis(offsetX, offsetX, 0, options.height - offsetY, options.xAxis)}
-      ${renderAxis(offsetX, options.width, options.height - offsetY, options.height - offsetY, options.yAxis)}
+      ${renderAxis(offsetX, offsetX, 0, options.height - offsetY, options.yAxis)}
+      ${renderAxis(offsetX, options.width, options.height - offsetY, options.height - offsetY, options.xAxis)}
       ${axisLabel(0, (options.height - offsetY) / 2, options.yLabel.name, __objSpread({
     style: "transform: rotate(-90deg);"
   }, options.yLabel), {style: "transform: translate(-15%, 55%)"})}
       ${yPoints.map((p, i) => {
+    p = new Intl.NumberFormat(options.yLabel.locale).format(p);
     const scaledPoint = yScaledLabels[i];
     return axisLabel(0, scaledPoint + 0.5, p, options.yLabel);
   })}

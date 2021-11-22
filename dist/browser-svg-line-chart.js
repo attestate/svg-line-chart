@@ -14,13 +14,13 @@
       </defs>
 
       <title>${r.title}</title>
-      ${u.map(p=>z(k,r.width,p,p,r.yLabel))}
-      ${d.map(({pos:p},j)=>{if(j!==0)return z(p,p,0,r.height-O,r.xLabel)})}
+      ${u.map(p=>z(k,r.width,p,p,r.yGrid))}
+      ${d.map(({pos:p},j)=>{if(j!==0)return z(p,p,0,r.height-O,r.xGrid)})}
       ${h} ${l}
-      ${z(k,k,0,r.height-O,r.xAxis)}
-      ${z(k,r.width,r.height-O,r.height-O,r.yAxis)}
+      ${z(k,k,0,r.height-O,r.yAxis)}
+      ${z(k,r.width,r.height-O,r.height-O,r.xAxis)}
       ${xe(0,(r.height-O)/2,r.yLabel.name,ve({style:"transform: rotate(-90deg);"},r.yLabel),{style:"transform: translate(-15%, 55%)"})}
-      ${n.map((p,j)=>{let g=s[j];return xe(0,g+.5,p,r.yLabel)})}
+      ${n.map((p,j)=>{p=new Intl.NumberFormat(r.yLabel.locale).format(p);let g=s[j];return xe(0,g+.5,p,r.yLabel)})}
       ${i.map(({pos:p,name:j})=>xe(p,r.height-O/2,j,r.xLabel))}
     </svg>
   `}function dr(e,r,a){if(a=J(a),e.length!==r.length)throw new Error(`x and y parameters need to be of same length. They are not: x (${e.length}) and y (${r.length}).`);if(e.length===0)throw new Error("Length of data x and y cannot be zero");let t="";for(let n=0;n<e.length;n++)t+=`${e[n]},${r[n]} `;return t=t.slice(0,-1),Y`
