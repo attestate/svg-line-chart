@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.4.0
+
+- (breaking) Pass `options.xAxis` and `options.yAxis` to correct axis
+  (it was wrong before).
+- (breaking) Separate font and axis style configuration.
+- Align y-axis label properly to not waste space.
+- Separate numerical magnitude of axis labels with comma
+
 ### 0.3.3
 
 - Time between two points horizontally is now scaled as their difference in
