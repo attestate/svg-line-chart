@@ -27,7 +27,8 @@ svg-line-chart is a server side charting library. Create a simple line chart wit
 
 ## Screenshot
 
-![](./assets/screenshot.png)
+![](./assets/screenshot1.png)
+![](./assets/screenshot2.png)
 
 We use this in production at https://news.kiwistand.com/stats
 
