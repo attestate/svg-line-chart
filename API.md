@@ -15,7 +15,7 @@ plot(html)({ x, y }, { options });
 
 ### `x`
 
-An array of Dates for the x-axis
+An array of Dates for the x-axis. Can alternatively be an array of numbers.
 
 ##### Example:
 
