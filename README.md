@@ -1,10 +1,10 @@
 # svg-line-chart
 
-[![npm version](https://badge.fury.io/js/svg-line-chart.svg)](https://badge.fury.io/js/svg-line-chart) [![Node.js CI](https://github.com/TimDaub/svg-line-chart/actions/workflows/node.js.yml/badge.svg)](https://github.com/TimDaub/svg-line-chart/actions/workflows/node.js.yml)
+[![npm version](https://badge.fury.io/js/svg-line-chart.svg)](https://badge.fury.io/js/svg-line-chart) [![Node.js CI](https://github.com/attestate/svg-line-chart/actions/workflows/node.js.yml/badge.svg)](https://github.com/attestate/svg-line-chart/actions/workflows/node.js.yml)
 
 ![logo](./assets/logo.png)
 
-#### Tired of 200kb charting browser libs? ...I feel ya. Come to the server-side!
+#### SVG chart generator library (works fully server-side)
 
 #### [API Documentation](./API.md) | [Changelog](./CHANGELOG.md)
 
@@ -23,13 +23,13 @@ ___
 
 ## About
 
-svg-line-chart is a server side charting library. Create a simple line chart with numbers on the y-axis and [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) on the x-axis.
+svg-line-chart is a server side charting library. Create a simple line chart with numbers on the y-axis and [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) or Integers on the x-axis.
 
 ## Screenshot
 
 ![](./assets/screenshot.png)
 
-Live demo at https://rugpullindex.com
+We use this in production at https://news.kiwistand.com/stats
 
 ## Installation
 
@@ -98,6 +98,7 @@ const chart = plot(html)(
     },
     xLabel: {
       fontSize: 1.5,
+      name: "Date"
     },
     yLabel: {
       fontSize: 1.5,
@@ -123,17 +124,16 @@ const chart = plot(html)(
   you prefer using `yNumLabels`. Please note that the algorithm behind
   `yNumLabels` is based on a best-effort strategy. There won't be a guarantee
   that it'll return the number specified.
+- You will probably need more than 31 days on the x axis for the date scaling to work.
   
 ## API
 The API documentation is available at [API.md](./API.md).
 
 ## Contributing
-We love contributions from the community. Find a [good first issue](https://github.com/rugpullindex/svg-line-chart/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
-Want to suggest a feature or even better raise a PR for it? Head over to the [issues](https://github.com/rugpullindex/svg-line-chart/issues) section or join our [discord](https://discord.gg/zhawZxgKQz).
+We love contributions from the community. Find a [good first issue](https://github.com/attestate/svg-line-chart/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
-You can also get paid for a PR. For more information read our [handbook](https://github.com/rugpullindex/documents/blob/master/handbook.md).
-
+Want to suggest a feature or even better raise a PR for it? Head over to the [issues](https://github.com/attestate/svg-line-chart/issues) section.
 ## Changelog
 The changelog is avaliable at [CHANGELOG.md](./CHANGELOG.md).
 
