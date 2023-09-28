@@ -7,14 +7,13 @@
   "exports": {
     ".": {
       "require": "./dist/svg-line-chart.js",
-      "default": "./dist/svg-line-chart.mjs"
+      "default": "./src/index.mjs"
     }
   },
   "module": "./dist/svg-line-chart.mjs",
   "browser": "dist/browser-svg-line-chart.js",
   "scripts": {
     "build:node:cjs": "esbuild src/index.mjs --outfile=dist/svg-line-chart.js --bundle --platform=node --target=node14.16.1",
-    "build:node:esm": "esbuild src/index.mjs --outfile=dist/svg-line-chart.mjs --bundle --platform=node --target=node14.16.1 --format=esm",
     "build:browser": "esbuild src/index.mjs --outfile=dist/browser-svg-line-chart.js --bundle --minify --sourcemap --target=es6",
     "build": "npm run build:node:cjs && npm run build:node:esm && npm run build:browser",
     "test": "ava --verbose",

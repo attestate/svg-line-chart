@@ -73,16 +73,19 @@ function _plot(data, options) {
     yPoints
   )
 
-  const xGridLines = [
-    ...xScaledLabels,
-    {
-      // Based on the fact that lines are equidistant from each other
-      pos:
-        xScaledLabels[xScaledLabels.length - 1].pos +
-        xScaledLabels[1].pos -
-        xScaledLabels[0].pos,
-    },
-  ]
+  const xGridLines =
+    xScaledLabels.length > 1
+      ? [
+          ...xScaledLabels,
+          {
+            // Based on the fact that lines are equidistant from each other
+            pos:
+              xScaledLabels[xScaledLabels.length - 1].pos +
+              xScaledLabels[1].pos -
+              xScaledLabels[0].pos,
+          },
+        ]
+      : []
   const yGridLines = [
     ...yScaledLabels,
     // Based on the fact that lines are equidistant from each other
@@ -248,41 +251,43 @@ export function insertInto(range, candidates) {
   return insertedAt
 }
 
-export function scaleDates(
-  from,
-  to,
-  range,
-  equalityOp = isSameHour,
-  rangeMeasurement = differenceInHours
-) {
+export function scaleDates(from, to, range) {
   range = sortRangeAsc(range)
 
-  const pWidth = pointWidth(to - from, range, rangeMeasurement)
+  const isDate = range[0] instanceof Date
+  const pWidth = pointWidth(
+    to - from,
+    range,
+    isDate ? differenceInHours : (a, b) => a - b
+  )
   const start = range[0]
   const x = range.map((d) => {
-    const distanceFromStart = rangeMeasurement(d, start)
+    const distanceFromStart = isDate ? differenceInHours(d, start) : d - start
     const pos = from + distanceFromStart * pWidth
     return pos
   })
 
-  const months = eachMonthOfInterval({
-    start: range[0],
-    end: range[range.length - 1],
-  })
-
-  const labels = months.map((firstDayOfMonth) => {
-    const distanceFromStart = rangeMeasurement(firstDayOfMonth, start)
-
-    const // Get formatted date.
-      _name = format(firstDayOfMonth, 'MMM yy'),
-      // Abbreviate date and add an apostrophe.
-      name = [_name.slice(0, -2), "'", _name.slice(-2)].join('')
-
-    return {
-      name,
-      pos: from + distanceFromStart * pWidth,
-    }
-  })
+  const labels = isDate
+    ? range
+        .filter((d) => {
+          // Only include the first day of each month
+          return d.getDate() === 1
+        })
+        .map((d) => {
+          const distanceFromStart = differenceInHours(d, start)
+          const name = format(d, 'MMM yy')
+          return {
+            name,
+            pos: from + distanceFromStart * pWidth,
+          }
+        })
+    : range.map((d) => {
+        const pos = from + (d - start) * pWidth
+        return {
+          name: d.toString(),
+          pos,
+        }
+      })
 
   return { x, xScaledLabels: labels }
 }
