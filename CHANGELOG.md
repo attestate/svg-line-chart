@@ -1,5 +1,11 @@
 # Changelog
 
+
+### 0.4.1
+
+- Add capability to input Integer array for x axis
+- Fix label name rendering for x and y axis
+
 ### 0.4.0
 
 - (breaking) Pass `options.xAxis` and `options.yAxis` to correct axis
