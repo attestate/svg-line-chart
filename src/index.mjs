@@ -97,70 +97,90 @@ function _plot(data, options) {
   const gradient = polygon(x, y, options)
 
   return html`
-    <svg ...${options.props} viewBox="0 0 ${options.width} ${options.height}">
-      <defs>
-        <linearGradient id="polygrad">
-          <stop
-            offset=${options.polygonGradient.offSet1}
-            stop-color=${options.polygonGradient.stopColor1}
-          />
-          <stop
-            offset=${options.polygonGradient.offSet2}
-            stop-color=${options.polygonGradient.stopColor2}
-          />
-        </linearGradient>
-      </defs>
+    <div
+      style="display: flex; flex-direction: row; align-items: center; width: 100%; height:
+ 100%; position: relative;"
+    >
+      ${options.yLabel.name
+        ? html`<div
+            style="color: black; transform: rotate(-90deg) translateX(-50%); transform-origin: left; position: absolute; left: 0; font-size: 0.6rem;"
+          >
+            ${options.yLabel.name}
+          </div>`
+        : null}
+      <div style="flex-grow: 1;padding-left: 1rem;">
+        <svg
+          ...${options.props}
+          viewBox="0 0 ${options.width} ${options.height}"
+        >
+          <defs>
+            <linearGradient id="polygrad">
+              <stop
+                offset=${options.polygonGradient.offSet1}
+                stop-color=${options.polygonGradient.stopColor1}
+              />
+              <stop
+                offset=${options.polygonGradient.offSet2}
+                stop-color=${options.polygonGradient.stopColor2}
+              />
+            </linearGradient>
+          </defs>
 
-      <title>${options.title}</title>
-      ${yGridLines.map((p) => {
-        return renderAxis(offsetX, options.width, p, p, options.yGrid)
-      })}
-      ${xGridLines.map(({ pos }, i) => {
-        // NOTE: We don't want to draw over the y axis, hence for the first
-        // element we don't draw.
-        if (i === 0) return
-        return renderAxis(pos, pos, 0, options.height - offsetY, options.xGrid)
-      })}
-      ${l} ${gradient}
-      ${renderAxis(
-        offsetX,
-        offsetX,
-        0,
-        options.height - offsetY,
-        options.yAxis
-      )}
-      ${renderAxis(
-        offsetX,
-        options.width,
-        options.height - offsetY,
-        options.height - offsetY,
-        options.xAxis
-      )}
-      ${axisLabel(
-        0,
-        (options.height - offsetY) / 2,
-        options.yLabel.name,
-        {
-          style: 'transform: rotate(-90deg);',
-          ...options.yLabel,
-        },
-        { style: 'transform: translate(-15%, 55%)' }
-      )}
-      ${yPoints.map((p, i) => {
-        p = new Intl.NumberFormat(options.yLabel.locale).format(p)
-        const scaledPoint = yScaledLabels[i]
-        // NOTE: +0.5 is to center text vertically
-        return axisLabel(0, scaledPoint + 0.5, p, options.yLabel)
-      })}
-      ${xScaledLabels.map(({ pos, name }) => {
-        return axisLabel(
-          pos,
-          options.height - offsetY / 2,
-          name,
-          options.xLabel
-        )
-      })}
-    </svg>
+          <title>${options.title}</title>
+          ${yGridLines.map((p) => {
+            return renderAxis(offsetX, options.width, p, p, options.yGrid)
+          })}
+          ${xGridLines.map(({ pos }, i) => {
+            // NOTE: We don't want to draw over the y axis, hence for the first
+            // element we don't draw.
+            if (i === 0) return
+            return renderAxis(
+              pos,
+              pos,
+              0,
+              options.height - offsetY,
+              options.xGrid
+            )
+          })}
+          ${l} ${gradient}
+          ${renderAxis(
+            offsetX,
+            offsetX,
+            0,
+            options.height - offsetY,
+            options.yAxis
+          )}
+          ${renderAxis(
+            offsetX,
+            options.width,
+            options.height - offsetY,
+            options.height - offsetY,
+            options.xAxis
+          )}
+          ${yPoints.map((p, i) => {
+            p = new Intl.NumberFormat(options.yLabel.locale).format(p)
+            const scaledPoint = yScaledLabels[i]
+            // NOTE: +0.5 is to center text vertically
+            return axisLabel(0, scaledPoint + 0.5, p, options.yLabel)
+          })}
+          ${xScaledLabels.map(({ pos, name }) => {
+            return axisLabel(
+              pos,
+              options.height - offsetY / 2,
+              name,
+              options.xLabel
+            )
+          })}
+        </svg>
+      </div>
+    </div>
+    ${options.xLabel.name
+      ? html`<div
+          style="font-size: 0.6rem; color: black; text-align: center; margin-top: -1rem;"
+        >
+          ${options.xLabel.name}
+        </div>`
+      : null}
   `
 }
 
